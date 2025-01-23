@@ -16,6 +16,7 @@ public class Bartholomew {
 
     public static void addTask(String message) {
         if (message == null || message.isBlank()) {
+            System.out.println(DIVIDER + "A description is required! \n" + DIVIDER);
             return;
         }
         String[] messageArray = message.split(" ", 2);
@@ -24,32 +25,72 @@ public class Bartholomew {
         enum TaskType {
             TODO, DEADLINE, EVENT
         }
-        TaskType type = TaskType.valueOf(messageArray[0].toUpperCase());
         Task newTask = null;
-        switch (type) {
-            case TODO :
-                newTask = new Todo(taskDetails.trim());
-                break;
-            case DEADLINE :
-                String[] deadlineParts = taskDetails.split("/by", 2);
-                newTask = new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim());
-                break;
-            case EVENT :
-                String[] eventParts = taskDetails.split("/from", 2);
-                String[] timeParts = eventParts[1].split("/to", 2);
-                newTask = new Event(eventParts[0].trim(), timeParts[0].trim(), timeParts[1].trim());
-                break;
+        try {
+            TaskType type = TaskType.valueOf(taskTypeStr);
+
+            switch (type) {
+                case TODO:
+                    if (taskDetails.isBlank()) {
+                        throw new IllegalArgumentException("'todo' task requires a description.");
+                    }
+                    newTask = new Todo(taskDetails.trim());
+                    break;
+                case DEADLINE:
+                    if (!taskDetails.contains("/by")) {
+                        throw new IllegalArgumentException("'deadline' task must include '/by' followed by a date.");
+                    }
+                    String[] deadlineParts = taskDetails.split("/by", 2);
+                    if (deadlineParts.length < 2 || deadlineParts[1].isBlank()) {
+                        throw new IllegalArgumentException("'deadline' task must specify a valid date after '/by'.");
+                    }
+                    newTask = new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim());
+                    break;
+                case EVENT:
+                    if (!taskDetails.contains("/from") || !taskDetails.contains("/to")) {
+                        throw new IllegalArgumentException("'event' task must include '/from' and '/to' with times.");
+                    }
+                    String[] eventParts = taskDetails.split("/from", 2);
+                    if (eventParts.length < 2 || eventParts[1].isBlank()) {
+                        throw new IllegalArgumentException("'event' task must specify a valid time after '/from'.");
+                    }
+                    String[] timeParts = eventParts[1].split("/to", 2);
+                    if (timeParts.length < 2 || timeParts[1].isBlank()) {
+                        throw new IllegalArgumentException("'event' task must specify a valid time after '/to'.");
+                    }
+
+                    newTask = new Event(eventParts[0].trim(), timeParts[0].trim(), timeParts[1].trim());
+                    break;
+            }
+
+            tasks.add(newTask);
+            String output = DIVIDER +
+                    " Noted! This task shall be remembered: \n   " +
+                    newTask.toString() + "\n" +
+                    " Thy list of labors now containeth " + countTasks() + " undertakings.\n" +
+                    DIVIDER;
+            System.out.println(output);
+
+        } catch (IllegalArgumentException e) {
+            if (e.getMessage().startsWith("No enum constant")) {
+                System.out.println(DIVIDER +
+                        " Apologies, I fear my understanding is lacking: " + taskTypeStr + " is not a valid task type.\n" +
+                        " Please use one of the following: todo, deadline, event.\n" +
+                        DIVIDER);
+            } else {
+                // Handle other IllegalArgumentExceptions (e.g., missing task details)
+                System.out.println(DIVIDER + " Error: " + e.getMessage() + "\n" + DIVIDER);
+            }
+        } catch (Exception e) {
+            System.out.println(DIVIDER + " Error: Something went wrong while adding the task.\n" + DIVIDER);
         }
-        tasks.add(newTask);
-        String output = DIVIDER +
-                " Noted! This task shall be remembered: \n   " +
-                newTask.toString() + "\n" +
-                " Thy list of labors now containeth " + countTasks() + " undertakings.\n" +
-                DIVIDER;
-        System.out.println(output);
     }
 
     public static void listTasks() {
+        if (tasks.isEmpty()) {
+            System.out.println(DIVIDER + " Thy list is empty, noble one!\n" + DIVIDER);
+            return;
+        }
         System.out.println(DIVIDER + " Hark! These be thy duties: \n");
         for (int i = 0; i < tasks.size(); i++) {
             String output = " " + (i + 1) + "." + tasks.get(i).toString();
@@ -59,18 +100,31 @@ public class Bartholomew {
     }
 
     public static void markTask(String mark, int taskNumber) {
-        Task t = tasks.get(taskNumber - 1);
-        String output;
-        if (mark.equals("mark")) {
-            t.markAsDone(true);
-            output = DIVIDER + " Done and dusted! This chore is no more: \n   " +
-                    t.toString() + "\n" + DIVIDER;
-        } else {
-            t.markAsDone(false);
-            output = DIVIDER + " Alas, this task remains unfinished: \n   " +
-                    t.toString() + "\n" + DIVIDER;
+        try {
+
+            if (taskNumber < 1 || taskNumber > tasks.size()) {
+                throw new IndexOutOfBoundsException("Task number is out of range.");
+            }
+            Task t = tasks.get(taskNumber - 1);
+            String output;
+            if (mark.equals("mark")) {
+                t.markAsDone(true);
+                output = DIVIDER + " Done and dusted! This chore is no more: \n   " +
+                        t.toString() + "\n" + DIVIDER;
+            } else {
+                t.markAsDone(false);
+                output = DIVIDER + " Alas, this task remains unfinished: \n   " +
+                        t.toString() + "\n" + DIVIDER;
+            }
+            System.out.println(output);
+
+        } catch (NumberFormatException e) {
+            System.out.println(DIVIDER + " Error: Task number must be a valid integer.\n" + DIVIDER);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(DIVIDER + " Error: " + e.getMessage() + "\n" + DIVIDER);
+        } catch (Exception e) {
+            System.out.println(DIVIDER + " Error: Unable to mark the task.\n" + DIVIDER);
         }
-        System.out.println(output);
     }
 
     public static int countTasks() {
@@ -86,19 +140,24 @@ public class Bartholomew {
         greetUser();
         tasks = new ArrayList<Task>();
         Scanner scanner = new Scanner(System.in);
+
         while (true) {
-             String input = scanner.nextLine();
-             String[] inputArray = input.split(" ", 2);
-             if (inputArray[0].equals("mark") || inputArray[0].equals("unmark")) {
-                 markTask(inputArray[0], Integer.parseInt(inputArray[1]));
-             } else if (input.equalsIgnoreCase("bye")) {
-                 exit();
-                 break;
-             } else if (input.equalsIgnoreCase("list")) {
-                 listTasks();
-             } else {
-                 addTask(input);
-             }
+            try {
+                String input = scanner.nextLine();
+                String[] inputArray = input.split(" ", 2);
+                if (inputArray[0].equals("mark") || inputArray[0].equals("unmark")) {
+                    markTask(inputArray[0], Integer.parseInt(inputArray[1]));
+                } else if (input.equalsIgnoreCase("bye")) {
+                    exit();
+                    break;
+                } else if (input.equalsIgnoreCase("list")) {
+                    listTasks();
+                } else {
+                    addTask(input);
+                }
+            } catch (Exception e) {
+                System.out.println(DIVIDER + " Error: Invalid command. Please try again.\n" + DIVIDER);
+            }
         }
         scanner.close();
     }
