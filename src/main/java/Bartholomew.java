@@ -17,14 +17,14 @@ public class Bartholomew {
     public static void addTask(String message) {
         Task newTask = new Task(message);
         tasks.add(newTask);
-        String echo = DIVIDER + "added: " + message + "\n" + DIVIDER;
+        String echo = DIVIDER + " added: " + message + "\n" + DIVIDER;
         System.out.println(echo);
     }
 
     public static void listTasks() {
-        System.out.println(DIVIDER + "Hark! These be thy duties: \n");
+        System.out.println(DIVIDER + " Hark! These be thy duties: \n");
         for (int i = 0; i < tasks.size(); i++) {
-            String output = (i + 1) + ". " + tasks.get(i).getTaskString();
+            String output = " " + (i + 1) + "." + tasks.get(i).getTaskString();
             System.out.println(output);
         }
         System.out.println(DIVIDER);
@@ -35,16 +35,18 @@ public class Bartholomew {
         String output;
         if (mark.equals("mark")) {
             t.markAsDone(true);
-            output = DIVIDER + "Done and dusted! This chore is no more: " + "\n" + t.getTaskString() + "\n" + DIVIDER;
+            output = DIVIDER + " Done and dusted! This chore is no more: \n   " +
+                    t.getTaskString() + "\n" + DIVIDER;
         } else {
             t.markAsDone(false);
-            output = DIVIDER + "Alas, this task remains unfinished: " + "\n" + t.getTaskString() + "\n" + DIVIDER;
+            output = DIVIDER + " Alas, this task remains unfinished: \n   " +
+                    t.getTaskString() + "\n" + DIVIDER;
         }
         System.out.println(output);
     }
 
     public static void exit() {
-        String exitMessage = DIVIDER + "Farewell! May the winds of fate bring us together again.\n" + DIVIDER;
+        String exitMessage = DIVIDER + " Farewell! May the winds of fate bring us together again.\n" + DIVIDER;
         System.out.println(exitMessage);
     }
 
