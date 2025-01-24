@@ -1,0 +1,15 @@
+todo Read a book
+event Attend a meeting /from 10am /to 11am
+deadline Submit assignment /by 2023-01-25
+list
+mark 1
+list
+mark 3
+list
+unmark 1
+list
+todo
+blah
+delete 3
+list
+bye
