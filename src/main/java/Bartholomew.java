@@ -30,7 +30,6 @@ public class Bartholomew {
         Task newTask = null;
         try {
             TaskType type = TaskType.valueOf(taskTypeStr);
-
             switch (type) {
                 case TODO:
                     if (taskDetails.isBlank()) {
