@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 
 public class Bartholomew {
-    private static final String DIVIDER = "____________________________________________________________\n";
+    private static final String DIVIDER = "__________________________________________________________________________\n";
     private static ArrayList<Task> tasks;
 
     public static void greetUser() {
@@ -19,9 +19,11 @@ public class Bartholomew {
             System.out.println(DIVIDER + "A description is required! \n" + DIVIDER);
             return;
         }
+
         String[] messageArray = message.split(" ", 2);
         String taskTypeStr = messageArray[0].toUpperCase();
         String taskDetails = (messageArray.length > 1) ? messageArray[1] : "";
+
         enum TaskType {
             TODO, DEADLINE, EVENT
         }
@@ -86,25 +88,13 @@ public class Bartholomew {
         }
     }
 
-    public static void listTasks() {
+    public static void markTask(String mark, String taskString) {
         if (tasks.isEmpty()) {
             System.out.println(DIVIDER + " Thy list is empty, noble one!\n" + DIVIDER);
             return;
         }
-        System.out.println(DIVIDER + " Hark! These be thy duties: \n");
-        for (int i = 0; i < tasks.size(); i++) {
-            String output = " " + (i + 1) + "." + tasks.get(i).toString();
-            System.out.println(output);
-        }
-        System.out.println(DIVIDER);
-    }
-
-    public static void markTask(String mark, int taskNumber) {
         try {
-
-            if (taskNumber < 1 || taskNumber > tasks.size()) {
-                throw new IndexOutOfBoundsException("Task number is out of range.");
-            }
+            int taskNumber = Integer.parseInt(taskString);
             Task t = tasks.get(taskNumber - 1);
             String output;
             if (mark.equals("mark")) {
@@ -121,10 +111,45 @@ public class Bartholomew {
         } catch (NumberFormatException e) {
             System.out.println(DIVIDER + " Error: Task number must be a valid integer.\n" + DIVIDER);
         } catch (IndexOutOfBoundsException e) {
-            System.out.println(DIVIDER + " Error: " + e.getMessage() + "\n" + DIVIDER);
+            System.out.println(DIVIDER + " Task number is out of range: " + e.getMessage() + "\n" + DIVIDER);
         } catch (Exception e) {
             System.out.println(DIVIDER + " Error: Unable to mark the task.\n" + DIVIDER);
         }
+    }
+
+    public static void deleteTask(String taskString) {
+        if (tasks.isEmpty()) {
+            System.out.println(DIVIDER + " Thy list is empty, noble one!\n" + DIVIDER);
+            return;
+        }
+        try {
+            int taskNumber = Integer.parseInt(taskString);
+            Task t = tasks.get(taskNumber - 1);
+            tasks.remove(taskNumber - 1);
+            String output = DIVIDER +
+                    "This task is vanquished permanently! It shall trouble thee no further:\n   " +
+                    t.toString() + "\n" +
+                    " Thy list of labors now containeth " + countTasks() + " undertakings.\n" +
+                    DIVIDER;
+            System.out.println(output);
+        } catch (NumberFormatException e) {
+            System.out.println(DIVIDER + " Task number must be a valid integer.\n" + DIVIDER);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(DIVIDER + " Task number is out of range: " + e.getMessage() + "\n" + DIVIDER);
+        }
+    }
+
+    public static void listTasks() {
+        if (tasks.isEmpty()) {
+            System.out.println(DIVIDER + " Thy list is empty, noble one!\n" + DIVIDER);
+            return;
+        }
+        System.out.println(DIVIDER + " Hark! These be thy duties: \n");
+        for (int i = 0; i < tasks.size(); i++) {
+            String output = " " + (i + 1) + "." + tasks.get(i).toString();
+            System.out.println(output);
+        }
+        System.out.println(DIVIDER);
     }
 
     public static int countTasks() {
@@ -146,7 +171,9 @@ public class Bartholomew {
                 String input = scanner.nextLine();
                 String[] inputArray = input.split(" ", 2);
                 if (inputArray[0].equals("mark") || inputArray[0].equals("unmark")) {
-                    markTask(inputArray[0], Integer.parseInt(inputArray[1]));
+                    markTask(inputArray[0], inputArray[1]);
+                } else if (inputArray[0].equals("delete")) {
+                    deleteTask(inputArray[1].trim());
                 } else if (input.equalsIgnoreCase("bye")) {
                     exit();
                     break;
