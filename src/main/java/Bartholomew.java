@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -45,7 +46,15 @@ public class Bartholomew {
                     if (deadlineParts.length < 2 || deadlineParts[1].isBlank()) {
                         throw new IllegalArgumentException("'deadline' task must specify a valid date after '/by'.");
                     }
-                    newTask = new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim());
+
+                    // Parse the date and handle invalid format
+                    try {
+                        LocalDate byDate = LocalDate.parse(deadlineParts[1].trim());
+                        newTask = new Deadline(deadlineParts[0].trim(), byDate);
+                    } catch (Exception e) {
+                        System.out.println(DIVIDER + " Error: Invalid date format. Please use the format yyyy-MM-dd for dates. \n" + DIVIDER);
+                        return;
+                    }
                     break;
                 case EVENT:
                     if (!taskDetails.contains("/from") || !taskDetails.contains("/to")) {
@@ -60,7 +69,15 @@ public class Bartholomew {
                         throw new IllegalArgumentException("'event' task must specify a valid time after '/to'.");
                     }
 
-                    newTask = new Event(eventParts[0].trim(), timeParts[0].trim(), timeParts[1].trim());
+                    // Parse the dates and handle invalid format
+                    try {
+                        LocalDate fromDate = LocalDate.parse(timeParts[0].trim());
+                        LocalDate toDate = LocalDate.parse(timeParts[1].trim());
+                        newTask = new Event(eventParts[0].trim(), fromDate, toDate);
+                    } catch (Exception e) {
+                        System.out.println(DIVIDER + " Error: Invalid date format. Please use the format yyyy-MM-dd for dates. \n" + DIVIDER);
+                        return;
+                    }
                     break;
             }
 
