@@ -1,0 +1,82 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Storage {
+    private static final String FILE_PATH = "./data/bart.txt";
+
+    public static void saveTasks(ArrayList<Task> tasks) {
+        try {
+            // Create the data directory if it doesn't exist
+            File directory = new File("./data");
+            if (!directory.exists()) {
+                directory.mkdir();
+            }
+
+            // Write tasks to the file
+            FileWriter writer = new FileWriter(FILE_PATH);
+            for (Task task : tasks) {
+                writer.write(task.toFileFormat() + "\n");
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error saving tasks to file: " + e.getMessage());
+        }
+    }
+
+    public static ArrayList<Task> loadTasks() {
+        ArrayList<Task> tasks = new ArrayList<>();
+        File file = new File(FILE_PATH);
+
+        // If the file doesn't exist, return an empty list
+        if (!file.exists()) {
+            return tasks;
+        }
+        try {
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                Task task = parseTaskFromFile(line);
+                if (task != null) {
+                    tasks.add(task);
+                }
+            }
+            scanner.close();
+        } catch (IOException e) {
+            System.out.println("Error loading tasks from file: " + e.getMessage());
+        }
+        return tasks;
+    }
+
+    private static Task parseTaskFromFile(String line) {
+        String[] parts = line.split(" \\| ");
+        if (parts.length < 3) {
+            return null; // Invalid line
+        }
+        String type = parts[0];
+        boolean isDone = parts[1].equals("1");
+        String description = parts[2];
+
+        switch (type) {
+            case "T":
+                Todo todo = new Todo(description);
+                if (isDone) todo.markAsDone(true);
+                return todo;
+            case "D":
+                if (parts.length < 4) return null;
+                Deadline deadline = new Deadline(description, parts[3]);
+                if (isDone) deadline.markAsDone(true);
+                return deadline;
+            case "E":
+                if (parts.length < 5) return null;
+                Event event = new Event(description, parts[3], parts[4]);
+                if (isDone) event.markAsDone(true);
+                return event;
+            default:
+                return null;
+        }
+    }
+}
