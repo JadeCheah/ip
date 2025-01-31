@@ -71,6 +71,7 @@ public class Bartholomew {
                     " Thy list of labors now containeth " + countTasks() + " undertakings.\n" +
                     DIVIDER;
             System.out.println(output);
+            Storage.saveTasks(tasks);
 
         } catch (IllegalArgumentException e) {
             if (e.getMessage().startsWith("No enum constant")) {
@@ -106,6 +107,7 @@ public class Bartholomew {
                         t.toString() + "\n" + DIVIDER;
             }
             System.out.println(output);
+            Storage.saveTasks(tasks);
 
         } catch (NumberFormatException e) {
             System.out.println(DIVIDER + " Error: Task number must be a valid integer.\n" + DIVIDER);
@@ -131,6 +133,7 @@ public class Bartholomew {
                     " Thy list of labors now containeth " + countTasks() + " undertakings.\n" +
                     DIVIDER;
             System.out.println(output);
+            Storage.saveTasks(tasks);
         } catch (NumberFormatException e) {
             System.out.println(DIVIDER + " Task number must be a valid integer.\n" + DIVIDER);
         } catch (IndexOutOfBoundsException e) {
@@ -155,6 +158,7 @@ public class Bartholomew {
         return tasks.size();
     }
 
+
     public static void exit() {
         String exitMessage = DIVIDER + " Farewell! May the winds of fate bring us together again.\n" + DIVIDER;
         System.out.println(exitMessage);
@@ -162,7 +166,7 @@ public class Bartholomew {
 
     public static void main(String[] args) {
         greetUser();
-        tasks = new ArrayList<Task>();
+        tasks = Storage.loadTasks();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
