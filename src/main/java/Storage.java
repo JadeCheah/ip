@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -67,14 +68,27 @@ public class Storage {
                 return todo;
             case "D":
                 if (parts.length < 4) return null;
-                Deadline deadline = new Deadline(description, parts[3]);
-                if (isDone) deadline.markAsDone(true);
-                return deadline;
+                try {
+                    LocalDate byDate = LocalDate.parse(parts[3]);
+                    Deadline deadline = new Deadline(description, byDate);
+                    if (isDone) deadline.markAsDone(true);
+                    return deadline;
+                } catch (Exception e) {
+                    System.out.println("Error: Invalid date format for Deadline task.");
+                    return null;
+                }
             case "E":
                 if (parts.length < 5) return null;
-                Event event = new Event(description, parts[3], parts[4]);
-                if (isDone) event.markAsDone(true);
-                return event;
+                try {
+                    LocalDate fromDate = LocalDate.parse(parts[3]);
+                    LocalDate toDate = LocalDate.parse(parts[4]);
+                    Event event = new Event(description, fromDate, toDate);
+                    if (isDone) event.markAsDone(true);
+                    return event;
+                } catch (Exception e) {
+                    System.out.println("Error: Invalid date format for Event task.");
+                    return null;
+                }
             default:
                 return null;
         }
