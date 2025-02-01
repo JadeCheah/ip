@@ -9,7 +9,7 @@ public class Ui {
 
     public void greetUser() {
         String greeting = DIVIDER +
-                " Greetings! I am bart.Bartholomew.\n" +
+                " Greetings! I am Bartholomew.\n" +
                 " What service may I offer thee this day?\n" +
                 DIVIDER;
         System.out.println(greeting);

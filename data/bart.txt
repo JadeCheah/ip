@@ -1,5 +1,7 @@
 E | 0 | hang out with friends | 2020-10-10 | 2020-10-11
 D | 1 | submit assignment | 2025-02-01
 T | 1 | eat lunch
-T | 0 | cs2103T lecture
-E | 0 | french class | 2025-02-01 | 2025-02-01
+T | 1 | cs2103T lecture
+E | 1 | french class | 2025-02-01 | 2025-02-01
+T | 0 | eat dinner
+T | 0 | a list

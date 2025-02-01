@@ -16,5 +16,16 @@ src/main/resources/docs/
 *.iml
 bin/
 
+# Ignore test-related files
 /text-ui-test/ACTUAL.TXT
-text-ui-test/EXPECTED-UNIX.TXT
+/text-ui-test/EXPECTED-UNIX.TXT
+
+# Ignore log files
+*.log
+
+# Ignore build artifacts
+*.jar
+*.war
+
+# Ignore test results
+/test-results/
