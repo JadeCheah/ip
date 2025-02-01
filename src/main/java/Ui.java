@@ -48,4 +48,13 @@ public class Ui {
     public void showListEmpty() {
         System.out.println(Ui.DIVIDER + " Thy list is empty, noble one!\n" + Ui.DIVIDER);
     }
+
+    public void showAddTask(Task task, int numberOfTasksLeft) {
+        String output = DIVIDER +
+                " Noted! This task shall be remembered: \n   " +
+                task.toString() + "\n" +
+                " Thy list of labors now containeth " + numberOfTasksLeft + " undertakings.\n" +
+                DIVIDER;
+        System.out.println(output);
+    }
 }

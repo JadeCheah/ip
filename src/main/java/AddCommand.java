@@ -45,7 +45,7 @@ public class AddCommand extends Command {
                         LocalDate byDate = LocalDate.parse(deadlineParts[1].trim());
                         newTask = new Deadline(deadlineParts[0].trim(), byDate);
                     } catch (Exception e) {
-                        System.out.println(Ui.DIVIDER + " Error: Invalid date format. Please use the format yyyy-MM-dd for dates. \n" + Ui.DIVIDER);
+                        ui.printError("Invalid date format. Please use the format yyyy-MM-dd for dates.");
                         return;
                     }
                     break;
@@ -68,32 +68,26 @@ public class AddCommand extends Command {
                         LocalDate toDate = LocalDate.parse(timeParts[1].trim());
                         newTask = new Event(eventParts[0].trim(), fromDate, toDate);
                     } catch (Exception e) {
-                        System.out.println(Ui.DIVIDER + " Error: Invalid date format. Please use the format yyyy-MM-dd for dates. \n" + Ui.DIVIDER);
+                        ui.printError("Invalid date format. Please use the format yyyy-MM-dd for dates.");
                         return;
                     }
                     break;
             }
 
             tasks.addTask(newTask);
-            String output = Ui.DIVIDER +
-                    " Noted! This task shall be remembered: \n   " +
-                    newTask.toString() + "\n" +
-                    " Thy list of labors now containeth " + tasks.countTasks() + " undertakings.\n" +
-                    Ui.DIVIDER;
-            System.out.println(output);
+            ui.showAddTask(newTask, tasks.countTasks());
 
         } catch (IllegalArgumentException e) {
             if (e.getMessage().startsWith("No enum constant")) {
-                System.out.println(Ui.DIVIDER +
-                        " Apologies, I fear my understanding is lacking: " + taskTypeStr + " is not a valid task type.\n" +
-                        " Please use one of the following: todo, deadline, event.\n" +
-                        Ui.DIVIDER);
+                ui.printError(
+                        "Apologies, I fear my understanding is lacking: " + taskTypeStr + " is not a valid task type.\n" +
+                        " Please user one of the following: todo, deadline, event.");
             } else {
                 // Handle other IllegalArgumentExceptions (e.g., missing task details)
-                System.out.println(Ui.DIVIDER + " Error: " + e.getMessage() + "\n" + Ui.DIVIDER);
+                ui.printError("Error: " + e.getMessage());
             }
         } catch (Exception e) {
-            System.out.println(Ui.DIVIDER + " Error: Something went wrong while adding the task.\n" + Ui.DIVIDER);
+            ui.printError("Error: Something went wrong while adding the task.");
         }
     }
 
