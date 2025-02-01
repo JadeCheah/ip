@@ -7,9 +7,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Storage {
-    private static final String FILE_PATH = "./data/bart.txt";
+    private String filePath;
 
-    public static void saveTasks(ArrayList<Task> tasks) {
+    public Storage(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public void saveTasks(TaskList tasks) {
         try {
             // Create the data directory if it doesn't exist
             File directory = new File("./data");
@@ -18,8 +22,8 @@ public class Storage {
             }
 
             // Write tasks to the file
-            FileWriter writer = new FileWriter(FILE_PATH);
-            for (Task task : tasks) {
+            FileWriter writer = new FileWriter(filePath);
+            for (Task task : tasks.tasks) {
                 writer.write(task.toFileFormat() + "\n");
             }
             writer.close();
@@ -28,9 +32,9 @@ public class Storage {
         }
     }
 
-    public static ArrayList<Task> loadTasks() {
+    public ArrayList<Task> loadTasks() {
         ArrayList<Task> tasks = new ArrayList<>();
-        File file = new File(FILE_PATH);
+        File file = new File(filePath);
 
         // If the file doesn't exist, return an empty list
         if (!file.exists()) {
