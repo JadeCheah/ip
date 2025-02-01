@@ -1,12 +1,12 @@
 package bart.command;
 
-import bart.*;
 import bart.task.Deadline;
 import bart.task.Event;
 import bart.task.Task;
 import bart.task.Todo;
 import bart.util.Storage;
 import bart.util.Ui;
+import bart.TaskList;
 
 import java.time.LocalDate;
 
@@ -35,13 +35,13 @@ public class AddCommand extends Command {
         try {
             TaskType type = TaskType.valueOf(taskTypeStr);
             switch (type) {
-                case TODO:
+            case TODO:
                     if (taskDetails.isBlank()) {
                         throw new IllegalArgumentException("'todo' task requires a description.");
                     }
                     newTask = new Todo(taskDetails.trim());
                     break;
-                case DEADLINE:
+            case DEADLINE:
                     if (!taskDetails.contains("/by")) {
                         throw new IllegalArgumentException("'deadline' task must include '/by' followed by a date.");
                     }
@@ -59,7 +59,7 @@ public class AddCommand extends Command {
                         return;
                     }
                     break;
-                case EVENT:
+            case EVENT:
                     if (!taskDetails.contains("/from") || !taskDetails.contains("/to")) {
                         throw new IllegalArgumentException("'event' task must include '/from' and '/to' with times.");
                     }
