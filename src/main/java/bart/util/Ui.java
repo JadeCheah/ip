@@ -2,6 +2,7 @@ package bart.util;
 
 import bart.task.Task;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Ui {
@@ -60,5 +61,14 @@ public class Ui {
                 " Thy list of labors now containeth " + numberOfTasksLeft + " undertakings.\n" +
                 DIVIDER;
         System.out.println(output);
+    }
+
+    public void printTasks(ArrayList<Task> tasks) {
+        System.out.println(DIVIDER + " To thee, good sir/lady, I present the quests thou dost pursue: " + "\n");
+        for (int i = 0; i < tasks.size(); i++) {
+            Task t = tasks.get(i);
+            System.out.println(" " + (i + 1) + "." + t.toString());
+        }
+        System.out.println(DIVIDER);
     }
 }
