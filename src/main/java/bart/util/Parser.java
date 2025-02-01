@@ -2,7 +2,16 @@ package bart.util;
 
 import bart.command.*;
 
+/**
+ * The Parser class is responsible for parsing user input into commands.
+ */
 public class Parser {
+    /**
+     * Parses the user input and returns the corresponding command.
+     *
+     * @param input The user input string.
+     * @return The command corresponding to the user input.
+     */
     public static Command parseCommand(String input) {
         String[] tokens = input.split(" ");
         if (tokens[0].equals("mark") || tokens[0].equals("unmark")) {

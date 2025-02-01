@@ -1,16 +1,15 @@
 package bart;
 
-import bart.task.Deadline;
 import bart.task.Task;
-import bart.task.Todo;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.ArrayList;
 
 public class TaskListTest {
+    /**
+     * Tests the deleteTask method of TaskList.
+     * Ensures that the correct task is deleted and the task list is updated accordingly.
+     */
     @Test
     public void testDeleteTask() {
         TaskList taskList = new TaskList();

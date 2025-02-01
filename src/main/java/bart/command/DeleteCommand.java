@@ -5,13 +5,29 @@ import bart.task.Task;
 import bart.TaskList;
 import bart.util.Ui;
 
+/**
+ * Represents a command to delete a task from the task list.
+ */
 public class DeleteCommand extends Command {
     private int taskNumber;
 
+    /**
+     * Constructs a DeleteCommand with the specified task number.
+     *
+     * @param taskNumber The task number to delete.
+     */
     public DeleteCommand(int taskNumber) {
         this.taskNumber = taskNumber;
     }
 
+    /**
+     * Executes the delete command, removing a task from the task list, and saves the tasks to storage 
+     * automatically.
+     *
+     * @param tasks   The task list to delete the task from.
+     * @param ui      The UI to interact with the user.
+     * @param storage The storage to save the tasks.
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         if (tasks.tasks.isEmpty()) {
@@ -30,6 +46,11 @@ public class DeleteCommand extends Command {
         }
     }
 
+    /**
+     * Indicates whether this command is an exit command.
+     *
+     * @return false as this is not an exit command.
+     */
     @Override
     public boolean isExit() {
         return false;

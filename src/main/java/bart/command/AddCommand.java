@@ -10,13 +10,29 @@ import bart.util.Ui;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a command to add a task to the task list.
+ */
 public class AddCommand extends Command {
     String fullCommand;
 
+    /**
+     * Constructs an AddCommand with the specified full command string.
+     *
+     * @param fullCommand The full command string.
+     */
     public AddCommand(String fullCommand) {
         this.fullCommand = fullCommand;
     }
 
+    /**
+     * Executes the add command, adding a task to the task list, and saves the tasks to the storage 
+     * automatically.
+     *
+     * @param tasks   The task list to add the task to.
+     * @param ui      The UI to interact with the user.
+     * @param storage The storage to save the tasks.
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         if (fullCommand == null || fullCommand.isBlank()) {
@@ -101,6 +117,11 @@ public class AddCommand extends Command {
         }
     }
 
+    /**
+     * Indicates whether this command is an exit command.
+     *
+     * @return false as this is not an exit command.
+     */
     @Override
     public boolean isExit() {
         return false;
