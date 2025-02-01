@@ -1,3 +1,10 @@
+package bart.command;
+
+import bart.util.Storage;
+import bart.task.Task;
+import bart.TaskList;
+import bart.util.Ui;
+
 public class MarkCommand extends Command {
     private boolean isMark;
     private int taskNumber;
@@ -25,9 +32,9 @@ public class MarkCommand extends Command {
             }
             ui.printMessage(output);
         } catch (NumberFormatException e) {
-            ui.printError("Error: Task number must be a valid integer.");
+            ui.printError("Error: bart.task.Task number must be a valid integer.");
         } catch (IndexOutOfBoundsException e) {
-            ui.printError("Task number is out of range: " + e.getMessage());
+            ui.printError("bart.task.Task number is out of range: " + e.getMessage());
         } catch (Exception e) {
             ui.printError("Error: Unable to mark the task.");
         } finally {

@@ -1,3 +1,13 @@
+package bart.command;
+
+import bart.*;
+import bart.task.Deadline;
+import bart.task.Event;
+import bart.task.Task;
+import bart.task.Todo;
+import bart.util.Storage;
+import bart.util.Ui;
+
 import java.time.LocalDate;
 
 public class AddCommand extends Command {

@@ -1,3 +1,9 @@
+package bart.command;
+
+import bart.util.Storage;
+import bart.TaskList;
+import bart.util.Ui;
+
 public class ExitCommand extends Command {
 
     @Override

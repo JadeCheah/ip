@@ -1,3 +1,7 @@
+package bart.util;
+
+import bart.task.Task;
+
 import java.util.Scanner;
 
 public class Ui {
@@ -5,7 +9,7 @@ public class Ui {
 
     public void greetUser() {
         String greeting = DIVIDER +
-                " Greetings! I am Bartholomew.\n" +
+                " Greetings! I am bart.Bartholomew.\n" +
                 " What service may I offer thee this day?\n" +
                 DIVIDER;
         System.out.println(greeting);

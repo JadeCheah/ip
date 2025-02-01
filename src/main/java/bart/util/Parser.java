@@ -1,3 +1,7 @@
+package bart.util;
+
+import bart.command.*;
+
 public class Parser {
     public static Command parseCommand(String input) {
         String[] tokens = input.split(" ");
