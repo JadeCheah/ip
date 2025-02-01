@@ -5,15 +5,31 @@ import bart.task.Task;
 import bart.TaskList;
 import bart.util.Ui;
 
+/**
+ * Represents a command to mark or unmark a task in the task list.
+ */
 public class MarkCommand extends Command {
     private boolean isMark;
     private int taskNumber;
 
+    /**
+     * Constructs a MarkCommand with the specified mark status and task number.
+     *
+     * @param isMark     True to mark the task as done, false to unmark it.
+     * @param taskNumber The task number to mark or unmark.
+     */
     public MarkCommand(boolean isMark, int taskNumber) {
         this.isMark = isMark;
         this.taskNumber = taskNumber;
     }
 
+     /**
+     * Executes the mark command, marking or unmarking a task in the task list.
+     *
+     * @param tasks   The task list containing the task to mark or unmark.
+     * @param ui      The UI to interact with the user.
+     * @param storage The storage to save the tasks.
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         if (tasks.tasks.isEmpty()) {
@@ -43,6 +59,11 @@ public class MarkCommand extends Command {
 
     }
 
+    /**
+     * Indicates whether this command is an exit command.
+     *
+     * @return false as this is not an exit command.
+     */
     @Override
     public boolean isExit() {
         return false;

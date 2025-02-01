@@ -13,13 +13,26 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * The Storage class handles loading and saving tasks to a file.
+ */
 public class Storage {
     private String filePath;
 
+    /**
+     * Constructs a Storage object with the specified file path.
+     *
+     * @param filePath The file path to load and save tasks.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Saves the tasks to the file.
+     *
+     * @param tasks The task list to save.
+     */
     public void saveTasks(TaskList tasks) {
         try {
             // Create the data directory if it doesn't exist
@@ -39,6 +52,11 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads the tasks from the file.
+     *
+     * @return The list of tasks loaded from the file.
+     */
     public ArrayList<Task> loadTasks() {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
@@ -63,6 +81,14 @@ public class Storage {
         return tasks;
     }
 
+    /**
+     * Parses a line of task data from the file and returns the corresponding Task
+     * object.
+     *
+     * @param line The line of task data.
+     * @return The Task object corresponding to the task data, or null if the line
+     *         is invalid.
+     */
     private static Task parseTaskFromFile(String line) {
         String[] parts = line.split(" \\| ");
         if (parts.length < 3) {
@@ -75,26 +101,31 @@ public class Storage {
         switch (type) {
             case "T":
                 Todo todo = new Todo(description);
-                if (isDone) todo.markAsDone(true);
+                if (isDone)
+                    todo.markAsDone(true);
                 return todo;
             case "D":
-                if (parts.length < 4) return null;
+                if (parts.length < 4)
+                    return null;
                 try {
                     LocalDate byDate = LocalDate.parse(parts[3]);
                     Deadline deadline = new Deadline(description, byDate);
-                    if (isDone) deadline.markAsDone(true);
+                    if (isDone)
+                        deadline.markAsDone(true);
                     return deadline;
                 } catch (Exception e) {
                     System.out.println("Error: Invalid date format for bart.task.Deadline task.");
                     return null;
                 }
             case "E":
-                if (parts.length < 5) return null;
+                if (parts.length < 5)
+                    return null;
                 try {
                     LocalDate fromDate = LocalDate.parse(parts[3]);
                     LocalDate toDate = LocalDate.parse(parts[4]);
                     Event event = new Event(description, fromDate, toDate);
-                    if (isDone) event.markAsDone(true);
+                    if (isDone)
+                        event.markAsDone(true);
                     return event;
                 } catch (Exception e) {
                     System.out.println("Error: Invalid date format for bart.task.Event task.");
