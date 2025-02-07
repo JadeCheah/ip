@@ -48,7 +48,9 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + formatDate(from) + " to: " + formatDate(to) + ")";
+        return "[E]" + super.toString()
+                + " (from: " + formatDateToString(from)
+                + " to: " + formatDateToString(to) + ")";
     }
 
     /**
@@ -67,7 +69,7 @@ public class Event extends Task {
      * @param date The date to format.
      * @return The formatted date string.
      */
-    private String formatDate(LocalDate date) {
+    private String formatDateToString(LocalDate date) {
         return date.format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
     }
 }

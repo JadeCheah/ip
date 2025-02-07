@@ -29,3 +29,6 @@ bin/
 
 # Ignore test results
 /test-results/
+
+# Ignore bart.txt
+/data/bart.txt

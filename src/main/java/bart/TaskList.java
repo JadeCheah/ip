@@ -3,13 +3,14 @@ package bart;
 import bart.task.Task;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 
 /**
  * Represents a list of tasks.
  */
 public class TaskList {
-    public ArrayList<Task> tasks;
+    private ArrayList<Task> tasks;
 
     /**
      * Constructs a TaskList with the specified list of tasks.
@@ -28,13 +29,22 @@ public class TaskList {
     }
 
      /**
-     * Retrieves a task from the list.
+     * Retrieves a specified task from the list.
      *
      * @param taskNumber The task number to retrieve.
      * @return The task at the specified position.
      */
     public Task getTask(int taskNumber) {
         return this.tasks.get(taskNumber - 1);
+    }
+
+    /**
+     * Retrieves the tasks of the task list
+     *
+     * @return The tasks field
+     */
+    public ArrayList<Task> getTasks() {
+        return tasks;
     }
 
     /**
@@ -77,14 +87,16 @@ public class TaskList {
         return tasks.size();
     }
 
+    /**
+     * Returns true if tasks is empty.
+     */
+    public boolean isEmpty() {
+        return tasks.isEmpty();
+    }
+
     public ArrayList<Task> findTask(String keyword) {
-        ArrayList<Task> filteredTasks = new ArrayList<>();
-        for (int i = 0; i < tasks.size(); i++) {
-            Task task = tasks.get(i);
-            if (task.getDescription().contains(keyword)) {
-                filteredTasks.add(task);
-            }
-        }
-        return filteredTasks;
+        return tasks.stream()
+                .filter(task -> task.getDescription().contains(keyword))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 }

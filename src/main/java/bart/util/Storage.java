@@ -43,7 +43,7 @@ public class Storage {
 
             // Write tasks to the file
             FileWriter writer = new FileWriter(filePath);
-            for (Task task : tasks.tasks) {
+            for (Task task : tasks.getTasks()) {
                 writer.write(task.toFileFormat() + "\n");
             }
             writer.close();
@@ -99,40 +99,40 @@ public class Storage {
         String description = parts[2];
 
         switch (type) {
-            case "T":
-                Todo todo = new Todo(description);
-                if (isDone)
-                    todo.markAsDone(true);
-                return todo;
-            case "D":
-                if (parts.length < 4)
-                    return null;
-                try {
-                    LocalDate byDate = LocalDate.parse(parts[3]);
-                    Deadline deadline = new Deadline(description, byDate);
-                    if (isDone)
-                        deadline.markAsDone(true);
-                    return deadline;
-                } catch (Exception e) {
-                    System.out.println("Error: Invalid date format for bart.task.Deadline task.");
-                    return null;
-                }
-            case "E":
-                if (parts.length < 5)
-                    return null;
-                try {
-                    LocalDate fromDate = LocalDate.parse(parts[3]);
-                    LocalDate toDate = LocalDate.parse(parts[4]);
-                    Event event = new Event(description, fromDate, toDate);
-                    if (isDone)
-                        event.markAsDone(true);
-                    return event;
-                } catch (Exception e) {
-                    System.out.println("Error: Invalid date format for bart.task.Event task.");
-                    return null;
-                }
-            default:
+        case "T":
+            Todo todo = new Todo(description);
+            if (isDone)
+                todo.markAsDone(true);
+            return todo;
+        case "D":
+            if (parts.length < 4)
                 return null;
+            try {
+                LocalDate byDate = LocalDate.parse(parts[3]);
+                Deadline deadline = new Deadline(description, byDate);
+                if (isDone)
+                    deadline.markAsDone(true);
+                return deadline;
+            } catch (Exception e) {
+                System.out.println("Error: Invalid date format for bart.task.Deadline task.");
+                return null;
+            }
+        case "E":
+            if (parts.length < 5)
+                return null;
+            try {
+                LocalDate fromDate = LocalDate.parse(parts[3]);
+                LocalDate toDate = LocalDate.parse(parts[4]);
+                Event event = new Event(description, fromDate, toDate);
+                if (isDone)
+                    event.markAsDone(true);
+                return event;
+            } catch (Exception e) {
+                System.out.println("Error: Invalid date format for bart.task.Event task.");
+                return null;
+            }
+        default:
+            return null;
         }
     }
 }

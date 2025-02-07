@@ -9,9 +9,9 @@ public class Ui {
     public static final String DIVIDER = "__________________________________________________________________________\n";
 
     public void greetUser() {
-        String greeting = DIVIDER +
-                " Greetings! I am Bartholomew.\n" +
-                " What service may I offer thee this day?\n" +
+        String greeting = DIVIDER
+                + " Greetings! I am Bartholomew.\n"
+                + " What service may I offer thee this day?\n" +
                 DIVIDER;
         System.out.println(greeting);
     }
@@ -38,10 +38,10 @@ public class Ui {
     }
 
     public void printDeletedTask(Task task, int numberOfTasksLeft) {
-        String output = DIVIDER +
-                "This task is vanquished permanently! It shall trouble thee no further:\n   " +
-                task.toString() + "\n" +
-                " Thy list of labors now containeth " + numberOfTasksLeft + " undertakings.\n" +
+        String output = DIVIDER
+                + "This task is vanquished permanently! It shall trouble thee no further:\n   "
+                + task.toString() + "\n"
+                + " Thy list of labors now containeth " + numberOfTasksLeft + " undertakings.\n" +
                 DIVIDER;
         System.out.println(output);
     }
@@ -55,10 +55,10 @@ public class Ui {
     }
 
     public void showAddTask(Task task, int numberOfTasksLeft) {
-        String output = DIVIDER +
-                " Noted! This task shall be remembered: \n   " +
-                task.toString() + "\n" +
-                " Thy list of labors now containeth " + numberOfTasksLeft + " undertakings.\n" +
+        String output = DIVIDER
+                + " Noted! This task shall be remembered: \n   "
+                + task.toString() + "\n"
+                + " Thy list of labors now containeth " + numberOfTasksLeft + " undertakings.\n" +
                 DIVIDER;
         System.out.println(output);
     }

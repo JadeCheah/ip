@@ -30,7 +30,7 @@ public class DeleteCommand extends Command {
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
-        if (tasks.tasks.isEmpty()) {
+        if (tasks.isEmpty()) {
             ui.printMessage("Thy list is empty, noble one!");
             return;
         }
@@ -38,9 +38,9 @@ public class DeleteCommand extends Command {
             Task t = tasks.deleteTask(taskNumber);
             ui.printDeletedTask(t, tasks.countTasks());
         } catch (NumberFormatException e) {
-            ui.printError("bart.task.Task number must be a valid integer.");
+            ui.printError("Task number must be a valid integer.");
         } catch (IndexOutOfBoundsException e) {
-            ui.printError("bart.task.Task number number is out of range: " + e.getMessage());
+            ui.printError("Task number number is out of range: " + e.getMessage());
         } finally {
             storage.saveTasks(tasks);
         }

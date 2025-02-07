@@ -36,7 +36,8 @@ public class Deadline extends Task{
      */
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + formatDate(by) + ")";
+        return "[D]" + super.toString()
+                + " (by: " + formatDateToString(by) + ")";
     }
 
     /**
@@ -55,7 +56,7 @@ public class Deadline extends Task{
      * @param date The date to format.
      * @return The formatted date string.
      */
-    private String formatDate(LocalDate date) {
+    private String formatDateToString(LocalDate date) {
         return date.format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
     }
 }

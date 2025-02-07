@@ -1,17 +1,17 @@
 package bart.command;
 
+import java.time.LocalDate;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+
 import bart.task.Deadline;
 import bart.task.Event;
 import bart.task.Todo;
 import bart.util.Storage;
 import bart.util.Ui;
-import org.junit.jupiter.api.Test;
 import bart.TaskList;
-
-import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 class AddCommandTest {
 
@@ -34,7 +34,9 @@ class AddCommandTest {
         // Assert
         assertEquals(1, taskList.countTasks(), "Task list should contain one task");
         assertInstanceOf(Todo.class, taskList.getTask(1), "Added task should be a Todo");
-        assertEquals("Read book", taskList.getTask(1).getDescription(), "Todo description should match");
+        assertEquals("Read book",
+                taskList.getTask(1).getDescription(),
+                "Todo description should match");
     }
 
     /**
@@ -55,9 +57,14 @@ class AddCommandTest {
 
         // Assert
         assertEquals(1, taskList.countTasks(), "Task list should contain one task");
-        assertInstanceOf(Deadline.class, taskList.getTask(1), "Added task should be a Deadline");
-        assertEquals("Submit assignment", taskList.getTask(1).getDescription(), "Deadline description should match");
-        assertEquals(LocalDate.of(2025, 12, 1), ((Deadline) taskList.getTask(1)).getByDate(),
+        assertInstanceOf(Deadline.class,
+                taskList.getTask(1),
+                "Added task should be a Deadline");
+        assertEquals("Submit assignment",
+                taskList.getTask(1).getDescription(),
+                "Deadline description should match");
+        assertEquals(LocalDate.of(2025, 12, 1),
+                ((Deadline) taskList.getTask(1)).getByDate(),
                 "Deadline date should match");
     }
 
@@ -78,12 +85,20 @@ class AddCommandTest {
         addCommand.execute(taskList, ui, storage);
 
         // Assert
-        assertEquals(1, taskList.countTasks(), "Task list should contain one task");
-        assertInstanceOf(Event.class, taskList.getTask(1), "Added task should be an Event");
-        assertEquals("Team meeting", taskList.getTask(1).getDescription(), "Event description should match");
-        assertEquals(LocalDate.of(2025, 12, 1), ((Event) taskList.getTask(1)).getFromDate(),
+        assertEquals(1,
+                taskList.countTasks(),
+                "Task list should contain one task");
+        assertInstanceOf(Event.class,
+                taskList.getTask(1),
+                "Added task should be an Event");
+        assertEquals("Team meeting",
+                taskList.getTask(1).getDescription(),
+                "Event description should match");
+        assertEquals(LocalDate.of(2025, 12, 1),
+                ((Event) taskList.getTask(1)).getFromDate(),
                 "Event start date should match");
-        assertEquals(LocalDate.of(2025, 12, 2), ((Event) taskList.getTask(1)).getToDate(),
+        assertEquals(LocalDate.of(2025, 12, 2),
+                ((Event) taskList.getTask(1)).getToDate(),
                 "Event end date should match");
     }
 
@@ -104,6 +119,8 @@ class AddCommandTest {
         addCommand.execute(taskList, ui, storage);
 
         // Assert
-        assertEquals(0, taskList.countTasks(), "Task list should remain empty for invalid command");
+        assertEquals(0,
+                taskList.countTasks(),
+                "Task list should remain empty for invalid command");
     }
 }
