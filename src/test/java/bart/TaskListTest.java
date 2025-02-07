@@ -1,9 +1,10 @@
 package bart;
 
-import bart.task.Task;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import bart.task.Task;
 
 public class TaskListTest {
     /**

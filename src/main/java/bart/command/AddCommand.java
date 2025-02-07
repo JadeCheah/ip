@@ -1,20 +1,20 @@
 package bart.command;
 
+import java.time.LocalDate;
+
+import bart.TaskList;
 import bart.task.Deadline;
 import bart.task.Event;
 import bart.task.Task;
 import bart.task.Todo;
 import bart.util.Storage;
 import bart.util.Ui;
-import bart.TaskList;
-
-import java.time.LocalDate;
 
 /**
  * Represents a command to add a task to the task list.
  */
 public class AddCommand extends Command {
-    String fullCommand;
+    private String fullCommand;
 
     /**
      * Constructs an AddCommand with the specified full command string.

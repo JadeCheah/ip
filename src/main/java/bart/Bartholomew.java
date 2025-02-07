@@ -1,11 +1,12 @@
 package bart;
 
+import java.util.Scanner;
+
 import bart.command.Command;
 import bart.util.Parser;
 import bart.util.Storage;
 import bart.util.Ui;
 
-import java.util.Scanner;
 
 /**
  * The Bartholomew class is the main entry point for the application.

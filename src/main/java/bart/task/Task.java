@@ -55,7 +55,7 @@ public class Task {
         return "[" + getStatusIcon() + "] " + description;
     }
 
-     /**
+    /**
      * Returns the file format representation of the task.
      *
      * @return The file format representation of the task.
@@ -71,8 +71,12 @@ public class Task {
      * @return True if the tasks are equal, false otherwise.
      */
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
         Task task = (Task) obj;
         return Objects.equals(description, task.description);
     }
