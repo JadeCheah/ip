@@ -1,8 +1,8 @@
 package bart.command;
 
-import bart.util.Storage;
-import bart.task.Task;
 import bart.TaskList;
+import bart.task.Task;
+import bart.util.Storage;
 import bart.util.Ui;
 
 /**

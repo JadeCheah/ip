@@ -3,10 +3,10 @@ package bart.util;
 import bart.command.AddCommand;
 import bart.command.Command;
 import bart.command.DeleteCommand;
-import bart.command.ListCommand;
-import bart.command.MarkCommand;
 import bart.command.ExitCommand;
 import bart.command.FindCommand;
+import bart.command.ListCommand;
+import bart.command.MarkCommand;
 
 /**
  * The Parser class is responsible for parsing user input into commands.

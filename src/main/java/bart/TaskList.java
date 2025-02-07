@@ -1,9 +1,9 @@
 package bart;
 
-import bart.task.Task;
-
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+
+import bart.task.Task;
 
 
 /**

@@ -3,9 +3,10 @@ package bart.command;
 import java.util.ArrayList;
 
 import bart.TaskList;
-import bart.util.Ui;
-import bart.util.Storage;
 import bart.task.Task;
+import bart.util.Storage;
+import bart.util.Ui;
+
 /**
  * Represents a command to find a task by searching for a keyword in the task description.
  */
