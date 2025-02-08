@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import bart.task.Task;
 
-
 /**
  * Represents a list of tasks.
  */
@@ -28,7 +27,7 @@ public class TaskList {
         this.tasks = new ArrayList<>();
     }
 
-     /**
+    /**
      * Retrieves a specified task from the list.
      *
      * @param taskNumber The task number to retrieve.
@@ -67,17 +66,6 @@ public class TaskList {
         tasks.remove(taskNumber - 1);
         return t;
     }
-
-    /**
-     * Prints all tasks in the list.
-     */
-    public void listTasks() {
-        for (int i = 0; i < tasks.size(); i++) {
-            String output = " " + (i + 1) + "." + tasks.get(i).toString();
-            System.out.println(output);
-        }
-    }
-
     /**
      * Returns the number of tasks in the list.
      *
@@ -94,7 +82,13 @@ public class TaskList {
         return tasks.isEmpty();
     }
 
-    public ArrayList<Task> findTask(String keyword) {
+    /**
+     * Finds and retrieves all tasks that contain a specific keyword in their description.
+     *
+     * @param keyword The keyword to search for in task descriptions.
+     * @return An {@code ArrayList} of tasks containing the keyword.
+     */
+    public ArrayList<Task> findTasks(String keyword) {
         return tasks.stream()
                 .filter(task -> task.getDescription().contains(keyword))
                 .collect(Collectors.toCollection(ArrayList::new));

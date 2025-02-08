@@ -15,13 +15,7 @@ public abstract class Command {
      * @param taskList The task list to operate on.
      * @param ui       The UI to interact with the user.
      * @param storage  The storage to save or load tasks.
+     * @return result of CommandType
      */
-    public abstract void execute(TaskList taskList, Ui ui, Storage storage);
-
-    /**
-     * Indicates whether this command is an exit command.
-     *
-     * @return true if this command is an exit command, false otherwise.
-     */
-    public abstract boolean isExit();
+    public abstract CommandResult execute(TaskList taskList, Ui ui, Storage storage);
 }

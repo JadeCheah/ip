@@ -1,9 +1,7 @@
 package bart;
 
-import java.util.Scanner;
-
 import bart.command.Command;
-import bart.util.Parser;
+import bart.command.CommandResult;
 import bart.util.Storage;
 import bart.util.Ui;
 
@@ -34,32 +32,11 @@ public class Bartholomew {
     }
 
     /**
-     * Runs the main event loop of the application.
-     * It greets the user, reads commands, and executes them until the exit command is given.
+     * Executes the command and returns it's result.
+     * @param c the command to be executed.
+     * @return result of the command execution.
      */
-    public void run() {
-        ui.greetUser();
-        boolean isExit = false;
-        Scanner scanner = new Scanner(System.in);
-        while (!isExit) {
-            try {
-                String fullCommand = ui.readCommand(scanner);
-                Command c = Parser.parseCommand(fullCommand);
-                c.execute(tasks, ui, storage);
-                isExit = c.isExit();
-            } catch (Exception e) {
-                ui.printMessage(e.getMessage());
-            }
-        }
-        scanner.close();
-    }
-
-    /**
-     * The main method to start the application.
-     *
-     * @param args Command line arguments.
-     */
-    public static void main(String[] args) {
-        new Bartholomew("./data/bart.txt").run();
+    public CommandResult getResponse(Command c) {
+        return c.execute(tasks, ui, storage);
     }
 }

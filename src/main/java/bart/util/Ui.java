@@ -1,74 +1,139 @@
 package bart.util;
 
+import java.util.ArrayList;
+
 import bart.task.Task;
 
-import java.util.ArrayList;
-import java.util.Scanner;
 
+/**
+ * Handles user interactions, including displaying messages and formatting output.
+ * Provides helper methods to generate responses for various commands.
+ */
 public class Ui {
-    public static final String DIVIDER = "__________________________________________________________________________\n";
+    /** Message displayed when the user provides an invalid command. */
+    public static final String INVALID_COMMAND =
+            """
+            Invalid command! Please enter one of the following commands:
+            General Commands:
+              - list → Shows all tasks.
+              - bye → Exits the program.
+            Task Management Commands:
+              - todo <task_description> → Adds a to-do task.
+              - deadline <task_description> /by <yyyy-MM-dd> → Adds a deadline.
+              - event <task_description> /from <yyyy-MM-dd> /to <yyyy-MM-dd> → Adds an event.
+            Task Modification Commands:
+              - mark <task_number> → Marks a task as done.
+              - unmark <task_number> → Unmarks a completed task.
+              - delete <task_number> → Deletes a task from the list.
+            Search Command:
+              - find <keyword> → Returns a list of tasks containing the specified keyword.
+            Tip: Task numbers correspond to the numbers in the list command.
+            Ensure proper command format and valid task numbers!
+            """;
+    /** Message displayed when an invalid date format is provided. */
+    public static final String INVALID_DATE_FORMAT = "Invalid date format. Please use format yyyy-MM-dd for dates.";
 
-    public void greetUser() {
-        String greeting = DIVIDER
-                + " Greetings! I am Bartholomew.\n"
-                + " What service may I offer thee this day?\n" +
-                DIVIDER;
-        System.out.println(greeting);
-    }
+    /** Message displayed upon program exit. */
+    public static final String EXIT_MESSAGE = "Farewell! May the winds of fate bring us together again.\n";
 
-    public String readCommand(Scanner scanner) {
-        return scanner.nextLine();
-    }
+    /** Message displayed when the task list is empty. */
+    public static final String EMPTY_LIST_MESSAGE = "Thy list is empty, noble one!\n";
 
-    public void showExit() {
-        String exitMessage = DIVIDER + " Farewell! May the winds of fate bring us together again.\n" + DIVIDER;
-        System.out.println(exitMessage);
-    }
+    /** Message displayed when a task is marked as completed. */
+    public static final String TASK_MARKED_MESSAGE = "Done and dusted! This chore is no more:\n  ";
 
-    public void printMessage(String message) {
-        System.out.println(DIVIDER + " " + message + " \n" + DIVIDER);
-    }
+    /** Message displayed when a task is unmarked as incomplete. */
+    public static final String TASK_UNMARKED_MESSAGE = "Alas, this task remains unfinished:\n   ";
 
-    public void listHeader() {
-        System.out.println(DIVIDER + " Hark! These be thy duties: \n");
-    }
+    /** Message displayed when an invalid task number is provided. */
+    public static final String INVALID_TASK_NUMBER = "Task number must be a valid integer.";
 
-    public void printDivider() {
-        System.out.println(DIVIDER);
-    }
+    /** Message displayed when a task number is out of range. */
+    public static final String TASK_NUMBER_OUT_OF_RANGE = "Task number is out of range.";
 
-    public void printDeletedTask(Task task, int numberOfTasksLeft) {
-        String output = DIVIDER
-                + "This task is vanquished permanently! It shall trouble thee no further:\n   "
+    /**
+     * Generates a response when a task is added.
+     *
+     * @param task            The task that was added.
+     * @param numberOfTasksLeft The number of tasks remaining in the task list.
+     * @return A formatted string confirming the addition of the task.
+     */
+    public String getAddTaskString(Task task, int numberOfTasksLeft) {
+        String output = "Noted! This task shall be remembered: \n  "
                 + task.toString() + "\n"
-                + " Thy list of labors now containeth " + numberOfTasksLeft + " undertakings.\n" +
-                DIVIDER;
-        System.out.println(output);
+                + " Thy list of labors now containeth " + numberOfTasksLeft + " undertakings.\n";
+        return output;
     }
 
-    public void printError(String errorMessage) {
-        System.out.println(DIVIDER + " " + errorMessage + "\n" + DIVIDER);
-    }
-
-    public void showListEmpty() {
-        System.out.println(Ui.DIVIDER + " Thy list is empty, noble one!\n" + Ui.DIVIDER);
-    }
-
-    public void showAddTask(Task task, int numberOfTasksLeft) {
-        String output = DIVIDER
-                + " Noted! This task shall be remembered: \n   "
+    /**
+     * Generates a response when a task is deleted.
+     *
+     * @param task             The task that was deleted.
+     * @param numberOfTasksLeft The number of remaining tasks in the task list.
+     * @return A formatted string confirming the deletion of the task.
+     */
+    public String getDeletedTaskString(Task task, int numberOfTasksLeft) {
+        String output = "This task is vanquished permanently! It shall trouble thee no further:\n   "
                 + task.toString() + "\n"
-                + " Thy list of labors now containeth " + numberOfTasksLeft + " undertakings.\n" +
-                DIVIDER;
-        System.out.println(output);
+                + " Thy list of labors now containeth " + numberOfTasksLeft + " undertakings.\n";
+        return output;
     }
 
-    public void printTasks(ArrayList<Task> tasks) {
-        System.out.println(DIVIDER + " To thee, good sir/lady, I present the quests thou dost pursue: " + "\n");
+    /**
+     * Generates a response listing tasks that match a search keyword.
+     *
+     * @param tasks The list of tasks matching the keyword.
+     * @return A formatted string of matching tasks or a message if no tasks are found.
+     */
+    public String getFindTasksString(ArrayList<Task> tasks) {
+        if (tasks.isEmpty()) {
+            return "No record of such tasks doth exist.";
+        }
+        StringBuilder result = new StringBuilder();
+        result.append("To thee, good sir/lady, I present the quests thou dost pursue:\n");
+
         for (int i = 0; i < tasks.size(); i++) {
             Task t = tasks.get(i);
-            System.out.println(" " + (i + 1) + "." + t.toString());
+            result.append(" ").append(i + 1).append(". ").append(t.toString()).append("\n");
         }
-        System.out.println(DIVIDER);
+        return result.toString();
+    }
+
+    /**
+     * Generates a response listing all tasks in the task list.
+     *
+     * @param tasks The list of tasks.
+     * @return A formatted string containing all tasks or a message if the list is empty.
+     */
+    public String getListTasksString(ArrayList<Task> tasks) {
+        if (tasks.isEmpty()) {
+            return EMPTY_LIST_MESSAGE;
+        }
+
+        StringBuilder result = new StringBuilder();
+        result.append("Hark! These be thy duties:\n");
+
+        for (int i = 0; i < tasks.size(); i++) {
+            result.append(" ").append(i + 1).append(". ").append(tasks.get(i).toString()).append("\n");
+        }
+        return result.toString();
+    }
+
+    /**
+     * Generates a response when a task is marked or unmarked.
+     *
+     * @param isMark      Whether the task is being marked as complete ({@code true})
+     *                    or unmarked as incomplete ({@code false}).
+     * @param taskString  The string representation of the task being marked or unmarked.
+     * @return A formatted string confirming the task's status.
+     */
+    public String getMarkTaskString(boolean isMark, String taskString) {
+        if (isMark) {
+            return TASK_MARKED_MESSAGE + taskString;
+        } else {
+            return TASK_UNMARKED_MESSAGE + taskString;
+        }
     }
 }
+
+

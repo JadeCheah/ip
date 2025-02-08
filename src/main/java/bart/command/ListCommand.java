@@ -16,23 +16,8 @@ public class ListCommand extends Command {
      * @param storage The storage (not used in this command).
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
-        if (tasks.isEmpty()) {
-            ui.printMessage("Thy list is empty, noble one!");
-            return;
-        }
-        ui.listHeader();
-        tasks.listTasks();
-        ui.printDivider();
-    }
-
-    /**
-     * Indicates whether this command is an exit command.
-     *
-     * @return false as this is not an exit command.
-     */
-    @Override
-    public boolean isExit() {
-        return false;
+    public CommandResult execute(TaskList tasks, Ui ui, Storage storage) {
+        String result = ui.getListTasksString(tasks.getTasks());
+        return new CommandResult(CommandResult.ResultType.SUCCESS, result);
     }
 }
