@@ -36,7 +36,8 @@ public class MainWindow extends AnchorPane {
 
     /**
      * Initializes the GUI components.
-     * Binds the scroll pane to automatically scroll to the bottom when new dialog boxes are added.
+     * - Binds the scroll pane to automatically scroll when new messages appear.
+     * - Displays the greeting message when Bartholomew starts.
      */
     @FXML
     public void initialize() {
@@ -50,6 +51,10 @@ public class MainWindow extends AnchorPane {
      */
     public void setBart(Bartholomew b) {
         bartholomew = b;
+
+        // Display greeting message after Bartholomew has been initialized
+        String greetingMessage = bartholomew.getGreetingMessage();
+        dialogContainer.getChildren().add(DialogBox.getBartDialog(greetingMessage, bartImage));
     }
 
 

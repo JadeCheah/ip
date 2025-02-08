@@ -39,4 +39,8 @@ public class Bartholomew {
     public CommandResult getResponse(Command c) {
         return c.execute(tasks, ui, storage);
     }
+
+    public String getGreetingMessage() {
+        return Ui.GREETING_MESSAGE;
+    }
 }

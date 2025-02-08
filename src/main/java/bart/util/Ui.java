@@ -10,6 +10,14 @@ import bart.task.Task;
  * Provides helper methods to generate responses for various commands.
  */
 public class Ui {
+
+    /** The initial greeting message displayed when the application starts.*/
+    public static final String GREETING_MESSAGE =
+            """
+            Greetings! I am Bartholomew.
+            What service may I offer thee this day?
+            """;
+
     /** Message displayed when the user provides an invalid command. */
     public static final String INVALID_COMMAND =
             """
