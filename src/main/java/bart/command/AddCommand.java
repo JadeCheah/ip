@@ -98,6 +98,8 @@ public class AddCommand extends Command {
                     return;
                 }
                 break;
+            default:
+                ui.printError("Invalid task type.");
             }
 
             tasks.addTask(newTask);

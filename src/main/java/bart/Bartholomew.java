@@ -54,12 +54,8 @@ public class Bartholomew {
         scanner.close();
     }
 
-    /**
-     * The main method to start the application.
-     *
-     * @param args Command line arguments.
-     */
-    public static void main(String[] args) {
-        new Bartholomew("./data/bart.txt").run();
+    public String getResponse(Command c) {
+        c.execute(tasks, ui, storage);
+        return "Executed";
     }
 }
