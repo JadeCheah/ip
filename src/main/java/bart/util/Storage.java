@@ -1,17 +1,17 @@
 package bart.util;
 
-import bart.TaskList;
-import bart.task.Deadline;
-import bart.task.Event;
-import bart.task.Task;
-import bart.task.Todo;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import bart.TaskList;
+import bart.task.Deadline;
+import bart.task.Event;
+import bart.task.Task;
+import bart.task.Todo;
 
 /**
  * The Storage class handles loading and saving tasks to a file.
@@ -101,31 +101,36 @@ public class Storage {
         switch (type) {
         case "T":
             Todo todo = new Todo(description);
-            if (isDone)
+            if (isDone) {
                 todo.markAsDone(true);
+            }
             return todo;
         case "D":
-            if (parts.length < 4)
+            if (parts.length < 4) {
                 return null;
+            }
             try {
                 LocalDate byDate = LocalDate.parse(parts[3]);
                 Deadline deadline = new Deadline(description, byDate);
-                if (isDone)
+                if (isDone) {
                     deadline.markAsDone(true);
+                }
                 return deadline;
             } catch (Exception e) {
                 System.out.println("Error: Invalid date format for bart.task.Deadline task.");
                 return null;
             }
         case "E":
-            if (parts.length < 5)
+            if (parts.length < 5) {
                 return null;
+            }
             try {
                 LocalDate fromDate = LocalDate.parse(parts[3]);
                 LocalDate toDate = LocalDate.parse(parts[4]);
                 Event event = new Event(description, fromDate, toDate);
-                if (isDone)
+                if (isDone) {
                     event.markAsDone(true);
+                }
                 return event;
             } catch (Exception e) {
                 System.out.println("Error: Invalid date format for bart.task.Event task.");

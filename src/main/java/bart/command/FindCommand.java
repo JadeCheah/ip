@@ -25,18 +25,9 @@ public class FindCommand extends Command {
      * @param storage The storage (not used in this command).
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
-        ArrayList<Task> filteredTasks = tasks.findTask(keyword);
-        ui.printTasks(filteredTasks);
-    }
-
-    /**
-     * Indicates whether this command is an exit command.
-     *
-     * @return false as this is not an exit command.
-     */
-    @Override
-    public boolean isExit() {
-        return false;
+    public CommandResult execute(TaskList tasks, Ui ui, Storage storage) {
+        ArrayList<Task> filteredTasks = tasks.findTasks(keyword);
+        String result = ui.getFindTasksString(filteredTasks);
+        return new CommandResult(CommandResult.ResultType.SUCCESS, result);
     }
 }

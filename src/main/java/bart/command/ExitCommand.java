@@ -17,19 +17,7 @@ public class ExitCommand extends Command {
      * @param storage The storage (not used in this command).
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
-        ui.showExit();
-        return;
-    }
-
-
-    /**
-     * Indicates whether this command is an exit command.
-     *
-     * @return true as this is an exit command.
-     */
-    @Override
-    public boolean isExit() {
-        return true;
+    public CommandResult execute(TaskList tasks, Ui ui, Storage storage) {
+        return new CommandResult(CommandResult.ResultType.EXIT, Ui.EXIT_MESSAGE);
     }
 }

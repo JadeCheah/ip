@@ -23,7 +23,7 @@ public class MarkCommand extends Command {
         this.taskNumber = taskNumber;
     }
 
-     /**
+    /**
      * Executes the mark command, marking or unmarking a task in the task list.
      *
      * @param tasks   The task list containing the task to mark or unmark.
@@ -31,41 +31,28 @@ public class MarkCommand extends Command {
      * @param storage The storage to save the tasks.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
+    public CommandResult execute(TaskList tasks, Ui ui, Storage storage) {
         if (tasks.isEmpty()) {
-            ui.showListEmpty();
-            return;
+            return new CommandResult(CommandResult.ResultType.FAILURE,
+                    Ui.EMPTY_LIST_MESSAGE);
         }
         try {
             Task t = tasks.getTask(taskNumber);
-            String output;
-            if (isMark) {
-                t.markAsDone(true);
-                output = "Done and dusted! This chore is no more: \n   " + t.toString();
-            } else {
-                t.markAsDone(false);
-                output = "Alas, this task remains unfinished: \n   " + t.toString();
-            }
-            ui.printMessage(output);
+            t.markAsDone(isMark);
+            String result = ui.getMarkTaskString(isMark, t.toString());
+            return new CommandResult(CommandResult.ResultType.SUCCESS, result);
         } catch (NumberFormatException e) {
-            ui.printError("Error: bart.task.Task number must be a valid integer.");
+            return new CommandResult(CommandResult.ResultType.FAILURE,
+                    Ui.INVALID_TASK_NUMBER);
         } catch (IndexOutOfBoundsException e) {
-            ui.printError("bart.task.Task number is out of range: " + e.getMessage());
+            return new CommandResult(CommandResult.ResultType.FAILURE,
+                    Ui.TASK_NUMBER_OUT_OF_RANGE);
         } catch (Exception e) {
-            ui.printError("Error: Unable to mark the task.");
+            return new CommandResult(CommandResult.ResultType.FAILURE,
+                    "Error: Unable to mark the task.");
         } finally {
             storage.saveTasks(tasks);
         }
 
-    }
-
-    /**
-     * Indicates whether this command is an exit command.
-     *
-     * @return false as this is not an exit command.
-     */
-    @Override
-    public boolean isExit() {
-        return false;
     }
 }

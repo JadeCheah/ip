@@ -9,7 +9,6 @@ import bart.task.Task;
 import bart.task.Todo;
 import bart.util.Storage;
 import bart.util.Ui;
-
 /**
  * Represents a command to add a task to the task list.
  */
@@ -26,7 +25,7 @@ public class AddCommand extends Command {
     }
 
     /**
-     * Executes the add command, adding a task to the task list, and saves the tasks to the storage 
+     * Executes the add command, adding a task to the task list, and saves the tasks to the storage
      * automatically.
      *
      * @param tasks   The task list to add the task to.
@@ -34,10 +33,10 @@ public class AddCommand extends Command {
      * @param storage The storage to save the tasks.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
+    public CommandResult execute(TaskList tasks, Ui ui, Storage storage) {
         if (fullCommand == null || fullCommand.isBlank()) {
-            ui.printMessage("A description is required!");
-            return;
+            return new CommandResult(CommandResult.ResultType.FAILURE,
+                    "A description is required!");
         }
 
         String[] messageArray = fullCommand.split(" ", 2);
@@ -48,22 +47,24 @@ public class AddCommand extends Command {
             TODO, DEADLINE, EVENT
         }
         Task newTask = null;
+
         try {
             TaskType type = TaskType.valueOf(taskTypeStr);
             switch (type) {
             case TODO:
                 if (taskDetails.isBlank()) {
-                    throw new IllegalArgumentException("'todo' task requires a description.");
+                    return new CommandResult(CommandResult.ResultType.FAILURE,
+                            "'todo' task requires a description.");
                 }
                 newTask = new Todo(taskDetails.trim());
                 break;
             case DEADLINE:
                 if (!taskDetails.contains("/by")) {
-                    throw new IllegalArgumentException("'deadline' task must include '/by' followed by a date.");
+                    return new CommandResult(CommandResult.ResultType.FAILURE, Ui.INVALID_COMMAND);
                 }
                 String[] deadlineParts = taskDetails.split("/by", 2);
                 if (deadlineParts.length < 2 || deadlineParts[1].isBlank()) {
-                    throw new IllegalArgumentException("'deadline' task must specify a valid date after '/by'.");
+                    return new CommandResult(CommandResult.ResultType.FAILURE, Ui.INVALID_COMMAND);
                 }
 
                 // Parse the date and handle invalid format
@@ -71,21 +72,20 @@ public class AddCommand extends Command {
                     LocalDate byDate = LocalDate.parse(deadlineParts[1].trim());
                     newTask = new Deadline(deadlineParts[0].trim(), byDate);
                 } catch (Exception e) {
-                    ui.printError("Invalid date format. Please use the format yyyy-MM-dd for dates.");
-                    return;
+                    return new CommandResult(CommandResult.ResultType.FAILURE, Ui.INVALID_DATE_FORMAT);
                 }
                 break;
             case EVENT:
                 if (!taskDetails.contains("/from") || !taskDetails.contains("/to")) {
-                    throw new IllegalArgumentException("'event' task must include '/from' and '/to' with times.");
+                    return new CommandResult(CommandResult.ResultType.FAILURE, Ui.INVALID_COMMAND);
                 }
                 String[] eventParts = taskDetails.split("/from", 2);
                 if (eventParts.length < 2 || eventParts[1].isBlank()) {
-                    throw new IllegalArgumentException("'event' task must specify a valid time after '/from'.");
+                    return new CommandResult(CommandResult.ResultType.FAILURE, Ui.INVALID_COMMAND);
                 }
                 String[] timeParts = eventParts[1].split("/to", 2);
                 if (timeParts.length < 2 || timeParts[1].isBlank()) {
-                    throw new IllegalArgumentException("'event' task must specify a valid time after '/to'.");
+                    return new CommandResult(CommandResult.ResultType.FAILURE, Ui.INVALID_COMMAND);
                 }
 
                 // Parse the dates and handle invalid format
@@ -94,39 +94,22 @@ public class AddCommand extends Command {
                     LocalDate toDate = LocalDate.parse(timeParts[1].trim());
                     newTask = new Event(eventParts[0].trim(), fromDate, toDate);
                 } catch (Exception e) {
-                    ui.printError("Invalid date format. Please use the format yyyy-MM-dd for dates.");
-                    return;
+                    return new CommandResult(CommandResult.ResultType.FAILURE, Ui.INVALID_DATE_FORMAT);
                 }
                 break;
             default:
-                ui.printError("Invalid task type.");
+                return new CommandResult(CommandResult.ResultType.FAILURE, Ui.INVALID_COMMAND);
             }
 
             tasks.addTask(newTask);
-            ui.showAddTask(newTask, tasks.countTasks());
+            String result = ui.getAddTaskString(newTask, tasks.countTasks());
+            return new CommandResult(CommandResult.ResultType.SUCCESS, result);
 
         } catch (IllegalArgumentException e) {
-            if (e.getMessage().startsWith("No enum constant")) {
-                ui.printError(
-                        "Apologies, I fear my understanding is lacking: "
-                                + taskTypeStr + " is not a valid task type.\n"
-                                + " Please user one of the following: todo, deadline, event.");
-            } else {
-                // Handle other IllegalArgumentExceptions (e.g., missing task details)
-                ui.printError("Error: " + e.getMessage());
-            }
+            return new CommandResult(CommandResult.ResultType.FAILURE, Ui.INVALID_COMMAND);
         } catch (Exception e) {
-            ui.printError("Error: Something went wrong while adding the task.");
+            return new CommandResult(CommandResult.ResultType.FAILURE,
+                    "Error: Something went wrong while adding the task.");
         }
-    }
-
-    /**
-     * Indicates whether this command is an exit command.
-     *
-     * @return false as this is not an exit command.
-     */
-    @Override
-    public boolean isExit() {
-        return false;
     }
 }
