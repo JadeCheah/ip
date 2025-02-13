@@ -21,9 +21,15 @@ public class Main extends Application {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
+            assert ap != null : "AnchorPane should be loaded";
+
             Scene scene = new Scene(ap);
             stage.setScene(scene);
-            fxmlLoader.<MainWindow>getController().setBart(bartholomew); // inject the Bart instance
+
+            MainWindow controller = fxmlLoader.getController();
+            assert controller != null : "MainWindow controller should be initialized";
+
+            controller.setBart(bartholomew);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
