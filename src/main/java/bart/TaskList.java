@@ -10,6 +10,7 @@ import bart.task.Task;
  */
 public class TaskList {
     private ArrayList<Task> tasks;
+    private static final int INDEX_OFFSET = 1;
 
     /**
      * Constructs a TaskList with the specified list of tasks.
@@ -34,7 +35,7 @@ public class TaskList {
      * @return The task at the specified position.
      */
     public Task getTask(int taskNumber) {
-        return this.tasks.get(taskNumber - 1);
+        return this.tasks.get(taskNumber - INDEX_OFFSET);
     }
 
     /**
@@ -62,8 +63,8 @@ public class TaskList {
      * @return The deleted task.
      */
     public Task deleteTask(int taskNumber) {
-        Task t = tasks.get(taskNumber - 1);
-        tasks.remove(taskNumber - 1);
+        Task t = tasks.get(taskNumber - INDEX_OFFSET);
+        tasks.remove(taskNumber - INDEX_OFFSET);
         return t;
     }
     /**
