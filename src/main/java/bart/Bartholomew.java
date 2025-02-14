@@ -31,6 +31,8 @@ public class Bartholomew {
             System.out.println(e.getMessage());
             tasks = new TaskList();
         }
+        assert ui != null : "Ui should be initialized";
+        assert storage != null : "Storage should be initialized";
     }
 
     /**
@@ -41,6 +43,7 @@ public class Bartholomew {
     public CommandResult getResponse(String commandText) {
         try {
             Command command = Parser.parseCommand(commandText);
+            assert tasks != null : "TaskList should not be null when executing commands";
             CommandResult result = command.execute(tasks, ui, storage);
             return result;
         } catch (InvalidCommandException e) {
