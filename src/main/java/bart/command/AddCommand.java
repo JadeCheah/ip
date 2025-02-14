@@ -9,6 +9,7 @@ import bart.task.Deadline;
 import bart.task.Event;
 import bart.task.Task;
 import bart.task.Todo;
+import bart.util.Parser;
 import bart.util.Storage;
 import bart.util.Ui;
 /**
@@ -44,7 +45,7 @@ public class AddCommand extends Command {
      */
     @Override
     public CommandResult execute(TaskList tasks, Ui ui, Storage storage) {
-        if (isInvalidCommand(fullCommand)) {
+        if (Parser.isEmptyCommand(fullCommand)) {
             return new CommandResult(CommandResult.ResultType.FAILURE,
                     "A description is required!");
         }
@@ -59,15 +60,6 @@ public class AddCommand extends Command {
             return new CommandResult(CommandResult.ResultType.FAILURE,
                     "Error: Something went wrong while adding the task.");
         }
-    }
-    /**
-     * Checks if the given command is invalid (null or empty).
-     *
-     * @param command The command string to validate.
-     * @return {@code true} if the command is invalid, otherwise {@code false}.
-     */
-    private boolean isInvalidCommand(String command) {
-        return command == null || command.isBlank();
     }
 
     /**
@@ -101,7 +93,7 @@ public class AddCommand extends Command {
      * @throws InvalidCommandException If the description is missing.
      */
     private Task createTodo(String taskDetails) throws InvalidCommandException {
-        if (taskDetails.isBlank()) {
+        if (!Parser.isValidTodo(taskDetails)) {
             throw new InvalidCommandException(Ui.INVALID_TODO_FORMAT);
         }
         return new Todo(taskDetails.trim());
@@ -115,14 +107,10 @@ public class AddCommand extends Command {
      * @throws InvalidCommandException If the format is incorrect or the date is invalid.
      */
     private Task createDeadline(String taskDetails) throws InvalidCommandException {
-        if (!taskDetails.contains("/by")) {
+        if (!Parser.isValidDeadline(taskDetails)) {
             throw new InvalidCommandException(Ui.INVALID_DEADLINE_FORMAT);
         }
         String[] deadlineParts = taskDetails.split("/by", 2);
-        if (deadlineParts.length < 2 || deadlineParts[1].isBlank()) {
-            throw new InvalidCommandException(Ui.INVALID_DEADLINE_FORMAT);
-        }
-
         // Parse the date and handle invalid format
         try {
             LocalDate byDate = LocalDate.parse(deadlineParts[1].trim());
@@ -140,18 +128,11 @@ public class AddCommand extends Command {
      * @throws InvalidCommandException If the format is incorrect or dates are invalid.
      */
     private Task createEvent(String taskDetails) throws InvalidCommandException {
-        if (!taskDetails.contains("/from") || !taskDetails.contains("/to")) {
+        if (!Parser.isValidEvent(taskDetails)) {
             throw new InvalidCommandException(Ui.INVALID_EVENT_FORMAT);
         }
         String[] eventParts = taskDetails.split("/from", 2);
-        if (eventParts.length < 2 || eventParts[1].isBlank()) {
-            throw new InvalidCommandException(Ui.INVALID_EVENT_FORMAT);
-        }
         String[] timeParts = eventParts[1].split("/to", 2);
-        if (timeParts.length < 2 || timeParts[1].isBlank()) {
-            throw new InvalidCommandException(Ui.INVALID_EVENT_FORMAT);
-        }
-
         // Parse the dates and handle invalid format
         try {
             LocalDate fromDate = LocalDate.parse(timeParts[0].trim());

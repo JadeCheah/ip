@@ -36,4 +36,59 @@ public class Parser {
             return new AddCommand(input);
         }
     }
+    /**
+     * Checks if the given command is invalid (null or empty).
+     *
+     * @param command The command string to validate.
+     * @return {@code true} if the command is invalid, otherwise {@code false}.
+     */
+    public static boolean isEmptyCommand(String command) {
+        return command == null || command.isBlank();
+    }
+
+    /**
+     * Validates whether the given task details for a {@code Todo} task are valid.
+     *
+     * @param taskDetails The task description.
+     * @return {@code true} if the task description is not blank, otherwise {@code false}.
+     */
+    public static boolean isValidTodo(String taskDetails) {
+        return !taskDetails.isBlank();
+    }
+    /**
+     * Validates whether the given task details for a {@code Deadline} task are correctly formatted.
+     *
+     * @param taskDetails The task description including the deadline.
+     * @return {@code true} if the task description contains "/by" and a valid deadline, otherwise {@code false}.
+     */
+    public static boolean isValidDeadline(String taskDetails) {
+        if (!taskDetails.contains("/by")) {
+            return false;
+        }
+        String[] deadlineParts = taskDetails.split("/by", 2);
+        if (deadlineParts.length < 2 || deadlineParts[1].isBlank()) {
+            return false;
+        }
+        return true;
+    }
+    /**
+     * Validates whether the given task details for an {@code Event} task are correctly formatted.
+     *
+     * @param taskDetails The task description including event start and end times.
+     * @return {@code true} if the task description contains "/from" and "/to" with valid details, otherwise {@code false}.
+     */
+    public static boolean isValidEvent(String taskDetails) {
+        if (!taskDetails.contains("/from") || !taskDetails.contains("/to")) {
+            return false;
+        }
+        String[] eventParts = taskDetails.split("/from", 2);
+        if (eventParts.length < 2 || eventParts[1].isBlank()) {
+            return false;
+        }
+        String[] timeParts = eventParts[1].split("/to", 2);
+        if (timeParts.length < 2 || timeParts[1].isBlank()) {
+            return false;
+        }
+        return true;
+    }
 }
