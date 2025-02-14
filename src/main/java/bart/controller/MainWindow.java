@@ -82,7 +82,9 @@ public class MainWindow extends AnchorPane {
         CommandResult result = bartholomew.getResponse(command);
         dialogContainer.getChildren().add(DialogBox.getBartDialog(result.getMessage(), bartImage));
 
-        if (result.isExit()) exitApplication();
+        if (result.isExit()) {
+            exitApplication();
+        }
     }
 
     private void exitApplication() {

@@ -45,6 +45,15 @@ public class Ui {
             Tip: Task numbers correspond to the numbers in the list command.
             Ensure proper command format and valid task numbers!
             """;
+    /** Message displayed when invalid todo format, displays correct task command format */
+    public static final String INVALID_TODO_FORMAT =
+            "Please use format: todo <task_description>";
+    /** Message displayed when invalid deadline format, displays correct deadline command format */
+    public static final String INVALID_DEADLINE_FORMAT =
+            "Please use format: deadline <task_description> /by <yyyy-MM-dd>";
+    /** Message displayed when invalid event format, displays correct event command format */
+    public static final String INVALID_EVENT_FORMAT =
+            "Please use format: event <task_description> /from <yyyy-MM-dd> /to <yyyy-MM-dd>";
     /** Message displayed when an invalid date format is provided. */
     public static final String INVALID_DATE_FORMAT = "Invalid date format. Please use format yyyy-MM-dd for dates.";
 
