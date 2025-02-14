@@ -34,6 +34,7 @@ public class TaskList {
      * @return The task at the specified position.
      */
     public Task getTask(int taskNumber) {
+        assert taskNumber > 0 && taskNumber <= tasks.size() : "Invalid task number: " + taskNumber;
         return this.tasks.get(taskNumber - 1);
     }
 
@@ -62,6 +63,7 @@ public class TaskList {
      * @return The deleted task.
      */
     public Task deleteTask(int taskNumber) {
+        assert taskNumber > 0 && taskNumber <= tasks.size() : "Invalid task number for deletion: " + taskNumber;
         Task t = tasks.get(taskNumber - 1);
         tasks.remove(taskNumber - 1);
         return t;
