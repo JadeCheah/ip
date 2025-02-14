@@ -10,6 +10,13 @@ import bart.task.Task;
  * Provides helper methods to generate responses for various commands.
  */
 public class Ui {
+    /**
+     * The offset used for task numbering in the UI.
+     * Task numbers are 1-based for display purposes,
+     * while internal list indices are 0-based.
+     */
+    private static final int TASK_INDEX_OFFSET = 1;
+
 
     /** The initial greeting message displayed when the application starts.*/
     public static final String GREETING_MESSAGE =
@@ -102,7 +109,7 @@ public class Ui {
 
         for (int i = 0; i < tasks.size(); i++) {
             Task t = tasks.get(i);
-            result.append(" ").append(i + 1).append(". ").append(t.toString()).append("\n");
+            result.append(" ").append(i + TASK_INDEX_OFFSET).append(". ").append(t.toString()).append("\n");
         }
         return result.toString();
     }
@@ -122,7 +129,7 @@ public class Ui {
         result.append("Hark! These be thy duties:\n");
 
         for (int i = 0; i < tasks.size(); i++) {
-            result.append(" ").append(i + 1).append(". ").append(tasks.get(i).toString()).append("\n");
+            result.append(" ").append(i + TASK_INDEX_OFFSET).append(". ").append(tasks.get(i).toString()).append("\n");
         }
         return result.toString();
     }
