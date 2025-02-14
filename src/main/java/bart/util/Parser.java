@@ -7,6 +7,7 @@ import bart.command.ExitCommand;
 import bart.command.FindCommand;
 import bart.command.ListCommand;
 import bart.command.MarkCommand;
+import bart.exception.InvalidCommandException;
 
 /**
  * The Parser class is responsible for parsing user input into commands.
@@ -18,14 +19,12 @@ public class Parser {
      * @param input The user input string.
      * @return The command corresponding to the user input.
      */
-    public static Command parseCommand(String input) {
+    public static Command parseCommand(String input) throws InvalidCommandException {
         String[] tokens = input.split(" ", 2);
         if (tokens[0].equals("mark") || tokens[0].equals("unmark")) {
-            int taskNumber = Integer.parseInt(tokens[1].trim());
-            return new MarkCommand(tokens[0].equals("mark"), taskNumber);
+            return createMarkCommand(tokens);
         } else if (tokens[0].equals("delete")) {
-            int taskNumber = Integer.parseInt(tokens[1].trim());
-            return new DeleteCommand(taskNumber);
+            return createDeleteCommand(tokens);
         } else if (tokens[0].equals("find")) {
             return new FindCommand(tokens[1].trim());
         } else if (input.equalsIgnoreCase("bye")) {
@@ -35,6 +34,42 @@ public class Parser {
         } else {
             return new AddCommand(input);
         }
+    }
+
+    /**
+     * Creates a {@code MarkCommand} from the given input tokens.
+     *
+     * @param taskDetails The parsed input tokens.
+     * @return A {@code MarkCommand} instance.
+     * @throws InvalidCommandException If the format is incorrect or task number is missing.
+     */
+    public static MarkCommand createMarkCommand(String[] taskDetails) throws InvalidCommandException {
+        boolean isMark = taskDetails[0].equals("mark");
+        String taskNumStr = taskDetails.length > 1 ? taskDetails[1].trim() : "";
+
+        if (taskNumStr.isEmpty() || !taskNumStr.matches("\\d+")) {
+            throw new InvalidCommandException(Ui.INVALID_MARK_FORMAT);
+        }
+
+        int taskNumber = Integer.parseInt(taskNumStr);
+        return new MarkCommand(isMark, taskNumber);
+    }
+    /**
+     * Creates a {@code DeleteCommand} from the given input tokens.
+     *
+     * @param taskDetails The parsed input tokens.
+     * @return A {@code DeleteCommand} instance.
+     * @throws InvalidCommandException If the format is incorrect or task number is missing.
+     */
+    public static DeleteCommand createDeleteCommand(String[] taskDetails) throws InvalidCommandException {
+        String taskNumStr = taskDetails.length > 1 ? taskDetails[1].trim() : "";
+
+        if (taskNumStr.isEmpty() || !taskNumStr.matches("\\d+")) {
+            throw new InvalidCommandException(Ui.INVALID_DELETE_FORMAT);
+        }
+
+        int taskNumber = Integer.parseInt(taskNumStr);
+        return new DeleteCommand(taskNumber);
     }
     /**
      * Checks if the given command is invalid (null or empty).

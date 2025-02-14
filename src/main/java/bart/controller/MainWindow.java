@@ -78,8 +78,7 @@ public class MainWindow extends AnchorPane {
     }
 
     private void processUserCommand(String commandText) {
-        Command command = Parser.parseCommand(commandText);
-        CommandResult result = bartholomew.getResponse(command);
+        CommandResult result = bartholomew.getResponse(commandText);
         dialogContainer.getChildren().add(DialogBox.getBartDialog(result.getMessage(), bartImage));
 
         if (result.isExit()) {

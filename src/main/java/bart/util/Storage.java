@@ -29,17 +29,24 @@ public class Storage {
     }
 
     /**
+     * Creates a directory if it doesn't exist
+     * @param path
+     */
+    private void createDirectory(String path) {
+        File directory = new File(path);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+    }
+
+    /**
      * Saves the tasks to the file.
      *
      * @param tasks The task list to save.
      */
     public void saveTasks(TaskList tasks) {
         try {
-            // Create the data directory if it doesn't exist
-            File directory = new File("./data");
-            if (!directory.exists()) {
-                directory.mkdir();
-            }
+            createDirectory("./data");
 
             // Write tasks to the file
             FileWriter writer = new FileWriter(filePath);
