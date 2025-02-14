@@ -2,6 +2,8 @@ package bart;
 
 import bart.command.Command;
 import bart.command.CommandResult;
+import bart.exception.InvalidCommandException;
+import bart.util.Parser;
 import bart.util.Storage;
 import bart.util.Ui;
 
@@ -29,21 +31,22 @@ public class Bartholomew {
             System.out.println(e.getMessage());
             tasks = new TaskList();
         }
-
-        assert ui != null : "Ui should be initialized";
-        assert storage != null : "Storage should be initialized";
     }
 
     /**
      * Executes the command and returns it's result.
-     * @param c the command to be executed.
+     * @param commandText the command to be executed.
      * @return result of the command execution.
      */
-    public CommandResult getResponse(Command c) {
-        assert tasks != null : "TaskList should not be null when executing commands";
-        return c.execute(tasks, ui, storage);
+    public CommandResult getResponse(String commandText) {
+        try {
+            Command command = Parser.parseCommand(commandText);
+            CommandResult result = command.execute(tasks, ui, storage);
+            return result;
+        } catch (InvalidCommandException e) {
+            return new CommandResult(CommandResult.ResultType.FAILURE, e.getMessage());
+        }
     }
-
     public String getGreetingMessage() {
         return Ui.GREETING_MESSAGE;
     }

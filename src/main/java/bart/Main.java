@@ -19,20 +19,19 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
-            AnchorPane ap = fxmlLoader.load();
-            assert ap != null : "AnchorPane should be loaded";
-
-            Scene scene = new Scene(ap);
-            stage.setScene(scene);
-
-            MainWindow controller = fxmlLoader.getController();
-            assert controller != null : "MainWindow controller should be initialized";
-
-            controller.setBart(bartholomew);
-            stage.show();
+            setupUI(stage);
         } catch (IOException e) {
+            System.err.println("Failed to load UI: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private void setupUI(Stage stage) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
+        AnchorPane ap = fxmlLoader.load();
+        Scene scene = new Scene(ap);
+        stage.setScene(scene);
+        fxmlLoader.<MainWindow>getController().setBart(bartholomew); // inject the Bart instance
+        stage.show();
     }
 }

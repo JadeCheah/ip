@@ -68,23 +68,27 @@ public class MainWindow extends AnchorPane {
     @FXML
     private void handleUserInput() {
         String fullCommand = userInput.getText();
-        dialogContainer.getChildren().add(
-                DialogBox.getUserDialog(fullCommand, userImage)
-        );
-        Command command = Parser.parseCommand(fullCommand);
-        CommandResult result = bartholomew.getResponse(command);
-
-        dialogContainer.getChildren().add(
-                DialogBox.getBartDialog(result.getMessage(), bartImage)
-        );
-        // Check if the command is an exit command
-        if (result.isExit()) {
-            // Delay program exit to allow UI update
-            PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
-            delay.setOnFinished(event -> Platform.exit()); // Properly close JavaFX application
-            delay.play();
-        }
-
+        displayUserInput(fullCommand);
+        processUserCommand(fullCommand);
         userInput.clear();
+    }
+
+    private void displayUserInput(String input) {
+        dialogContainer.getChildren().add(DialogBox.getUserDialog(input, userImage));
+    }
+
+    private void processUserCommand(String commandText) {
+        CommandResult result = bartholomew.getResponse(commandText);
+        dialogContainer.getChildren().add(DialogBox.getBartDialog(result.getMessage(), bartImage));
+
+        if (result.isExit()) {
+            exitApplication();
+        }
+    }
+
+    private void exitApplication() {
+        PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
+        delay.setOnFinished(event -> Platform.exit());
+        delay.play();
     }
 }

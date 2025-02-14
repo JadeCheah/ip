@@ -9,6 +9,7 @@ import bart.task.Task;
  * Represents a list of tasks.
  */
 public class TaskList {
+    private static final int INDEX_OFFSET = 1;
     private ArrayList<Task> tasks;
 
     /**
@@ -34,8 +35,7 @@ public class TaskList {
      * @return The task at the specified position.
      */
     public Task getTask(int taskNumber) {
-        assert taskNumber > 0 && taskNumber <= tasks.size() : "Invalid task number: " + taskNumber;
-        return this.tasks.get(taskNumber - 1);
+        return this.tasks.get(taskNumber - INDEX_OFFSET);
     }
 
     /**
@@ -64,8 +64,8 @@ public class TaskList {
      */
     public Task deleteTask(int taskNumber) {
         assert taskNumber > 0 && taskNumber <= tasks.size() : "Invalid task number for deletion: " + taskNumber;
-        Task t = tasks.get(taskNumber - 1);
-        tasks.remove(taskNumber - 1);
+        Task t = tasks.get(taskNumber - INDEX_OFFSET);
+        tasks.remove(taskNumber - INDEX_OFFSET);
         return t;
     }
     /**

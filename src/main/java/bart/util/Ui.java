@@ -10,6 +10,13 @@ import bart.task.Task;
  * Provides helper methods to generate responses for various commands.
  */
 public class Ui {
+    /**
+     * The offset used for task numbering in the UI.
+     * Task numbers are 1-based for display purposes,
+     * while internal list indices are 0-based.
+     */
+    private static final int TASK_INDEX_OFFSET = 1;
+
 
     /** The initial greeting message displayed when the application starts.*/
     public static final String GREETING_MESSAGE =
@@ -38,6 +45,21 @@ public class Ui {
             Tip: Task numbers correspond to the numbers in the list command.
             Ensure proper command format and valid task numbers!
             """;
+    /** Message displayed when invalid mark format, displays correct mark command format */
+    public static final String INVALID_MARK_FORMAT =
+            "Please use format: `mark <task_number>` or `unmark <task_number>`";
+    /** Message displayed when invalid delete format, displays correct delete command format */
+    public static final String INVALID_DELETE_FORMAT =
+            "Please use format: `delete <task_number>`";
+    /** Message displayed when invalid todo format, displays correct task command format */
+    public static final String INVALID_TODO_FORMAT =
+            "Please use format: `todo <task_description>`";
+    /** Message displayed when invalid deadline format, displays correct deadline command format */
+    public static final String INVALID_DEADLINE_FORMAT =
+            "Please use format: `deadline <task_description> /by <yyyy-MM-dd>`";
+    /** Message displayed when invalid event format, displays correct event command format */
+    public static final String INVALID_EVENT_FORMAT =
+            "Please use format: `event <task_description> /from <yyyy-MM-dd> /to <yyyy-MM-dd>`";
     /** Message displayed when an invalid date format is provided. */
     public static final String INVALID_DATE_FORMAT = "Invalid date format. Please use format yyyy-MM-dd for dates.";
 
@@ -102,7 +124,7 @@ public class Ui {
 
         for (int i = 0; i < tasks.size(); i++) {
             Task t = tasks.get(i);
-            result.append(" ").append(i + 1).append(". ").append(t.toString()).append("\n");
+            result.append(" ").append(i + TASK_INDEX_OFFSET).append(". ").append(t.toString()).append("\n");
         }
         return result.toString();
     }
@@ -122,7 +144,7 @@ public class Ui {
         result.append("Hark! These be thy duties:\n");
 
         for (int i = 0; i < tasks.size(); i++) {
-            result.append(" ").append(i + 1).append(". ").append(tasks.get(i).toString()).append("\n");
+            result.append(" ").append(i + TASK_INDEX_OFFSET).append(". ").append(tasks.get(i).toString()).append("\n");
         }
         return result.toString();
     }
