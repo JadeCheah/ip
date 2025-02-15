@@ -1,6 +1,8 @@
 package bart.task;
 
 import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents a task with a description and a completion status.
@@ -8,6 +10,7 @@ import java.util.Objects;
 public class Task {
     protected String description;
     protected boolean isDone;
+    private Set<String> tags;
 
     /**
      * Constructs a Task with the specified description.
@@ -17,6 +20,7 @@ public class Task {
     public Task(String description) {
         this.description = description;
         this.isDone = false;
+        this.tags = new HashSet<>();
     }
 
     /**
@@ -34,7 +38,7 @@ public class Task {
      * @return "X" if the task is done, otherwise a space.
      */
     public String getStatusIcon() {
-        return ( isDone ? "X" : " ");
+        return (isDone ? "X" : " ");
     }
 
     /**
@@ -52,7 +56,7 @@ public class Task {
      * @return The string representation of the task.
      */
     public String toString() {
-        return "[" + getStatusIcon() + "] " + description;
+        return "[" + getStatusIcon() + "] " + description + formatTags();
     }
 
     /**
@@ -61,7 +65,42 @@ public class Task {
      * @return The file format representation of the task.
      */
     public String toFileFormat() {
-        return (isDone ? "1" : "0") + " | " + description;
+        String tagString = tags.isEmpty() ? "" : " | " + String.join(" ", tags);
+        return (isDone ? "1" : "0") + " | " + description + tagString;
+    }
+
+    /**
+     * Adds a tag to the task.
+     *
+     * @param tag The tag to be added (e.g., "#fun").
+     */
+    public void addTag(String tag) {
+        if (!tag.startsWith("#")) {
+            tag = "#" + tag;
+        }
+        tags.add(tag);
+    }
+
+    /**
+     * Removes a tag from the task.
+     *
+     * @param tag The tag to be removed.
+     */
+    public void removeTag(String tag) {
+        tags.remove(tag);
+    }
+
+    /**
+     * Returns a set of all tags associated with this task.
+     *
+     * @return The set of tags.
+     */
+    public Set<String> getTags() {
+        return tags;
+    }
+
+    private String formatTags() {
+        return tags.isEmpty() ? "" : " " + String.join(" ", tags);
     }
 
     /**

@@ -51,6 +51,8 @@ public class AddCommand extends Command {
         }
         try {
             Task newTask = createTask(fullCommand);
+            // Extract and add tags if present
+            extractAndAddTags(newTask, fullCommand);
             tasks.addTask(newTask);
             String result = ui.getAddTaskString(newTask, tasks.countTasks());
             return new CommandResult(CommandResult.ResultType.SUCCESS, result);
@@ -74,6 +76,8 @@ public class AddCommand extends Command {
             String[] messageArray = fullCommand.split(" ", 2);
             String taskTypeStr = messageArray[0].toUpperCase();
             String taskDetails = (messageArray.length > 1) ? messageArray[1] : "";
+            // Remove everything after the first '#'
+            taskDetails = taskDetails.split("#", 2)[0].trim();
 
             return switch (TaskType.valueOf(taskTypeStr)) {
             case TODO -> createTodo(taskDetails);
@@ -92,7 +96,7 @@ public class AddCommand extends Command {
      * @return The created {@code Todo} task.
      * @throws InvalidCommandException If the description is missing.
      */
-    private Task createTodo(String taskDetails) throws InvalidCommandException {
+    private Todo createTodo(String taskDetails) throws InvalidCommandException {
         if (!Parser.isValidTodo(taskDetails)) {
             throw new InvalidCommandException(Ui.INVALID_TODO_FORMAT);
         }
@@ -106,7 +110,7 @@ public class AddCommand extends Command {
      * @return The created {@code Deadline} task.
      * @throws InvalidCommandException If the format is incorrect or the date is invalid.
      */
-    private Task createDeadline(String taskDetails) throws InvalidCommandException {
+    private Deadline createDeadline(String taskDetails) throws InvalidCommandException {
         if (!Parser.isValidDeadline(taskDetails)) {
             throw new InvalidCommandException(Ui.INVALID_DEADLINE_FORMAT);
         }
@@ -127,7 +131,7 @@ public class AddCommand extends Command {
      * @return The created {@code Event} task.
      * @throws InvalidCommandException If the format is incorrect or dates are invalid.
      */
-    private Task createEvent(String taskDetails) throws InvalidCommandException {
+    private Event createEvent(String taskDetails) throws InvalidCommandException {
         if (!Parser.isValidEvent(taskDetails)) {
             throw new InvalidCommandException(Ui.INVALID_EVENT_FORMAT);
         }
@@ -140,6 +144,21 @@ public class AddCommand extends Command {
             return new Event(eventParts[0].trim(), fromDate, toDate);
         } catch (DateTimeParseException e) {
             throw new InvalidCommandException(Ui.INVALID_DATE_FORMAT);
+        }
+    }
+
+    /**
+     * Extracts tags from the command and adds them to the given task.
+     *
+     * @param task The task to which tags will be added.
+     * @param fullCommand The full command from user input to be parsed.
+     */
+    private void extractAndAddTags(Task task, String fullCommand) {
+        String[] words = fullCommand.split(" ");
+        for (String word : words) {
+            if (word.startsWith("#")) {
+                task.addTag(word.substring(1)); // Remove '#' and add the tag
+            }
         }
     }
 }

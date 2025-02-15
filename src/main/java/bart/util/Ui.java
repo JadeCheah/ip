@@ -164,6 +164,21 @@ public class Ui {
             return TASK_UNMARKED_MESSAGE + taskString;
         }
     }
+
+    /**
+     * Generates a response when a tag is added to a task.
+     *
+     * @param tag  The tag string tagged to task.
+     * @param task The task to tag.
+     * @return A formatted string confirming the adding of a tag to a task.
+     */
+    public String getTagTaskString(boolean isTag, String tag, Task task) {
+        if (isTag) {
+            return "Added tag " + tag + " to task:\n  " + task.toString() + ".";
+        } else {
+            return "Removed tag " + tag + " from task:\n  " + task.toString() + ".";
+        }
+    }
 }
 
 

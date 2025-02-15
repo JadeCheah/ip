@@ -104,29 +104,24 @@ public class Storage {
         String type = parts[0];
         boolean isDone = parts[1].equals("1");
         String description = parts[2];
+        Task task = null;
 
         switch (type) {
         case "T":
-            Todo todo = new Todo(description);
-            if (isDone) {
-                todo.markAsDone(true);
-            }
-            return todo;
+            task = new Todo(description);
+            break;
         case "D":
             if (parts.length < 4) {
                 return null;
             }
             try {
                 LocalDate byDate = LocalDate.parse(parts[3]);
-                Deadline deadline = new Deadline(description, byDate);
-                if (isDone) {
-                    deadline.markAsDone(true);
-                }
-                return deadline;
+                task = new Deadline(description, byDate);
             } catch (Exception e) {
                 System.out.println("Error: Invalid date format for bart.task.Deadline task.");
                 return null;
             }
+            break;
         case "E":
             if (parts.length < 5) {
                 return null;
@@ -134,17 +129,28 @@ public class Storage {
             try {
                 LocalDate fromDate = LocalDate.parse(parts[3]);
                 LocalDate toDate = LocalDate.parse(parts[4]);
-                Event event = new Event(description, fromDate, toDate);
-                if (isDone) {
-                    event.markAsDone(true);
-                }
-                return event;
+                task = new Event(description, fromDate, toDate);
             } catch (Exception e) {
                 System.out.println("Error: Invalid date format for bart.task.Event task.");
                 return null;
             }
+            break;
         default:
             return null;
         }
+        // Mark as done if needed
+        if (task != null && isDone) {
+            task.markAsDone(true);
+        }
+
+        int minFields = (task instanceof Event) ? 5 : (task instanceof Deadline) ? 4 : 3;
+        if (parts.length > minFields) {
+            for (int i = minFields; i < parts.length; i++) {
+                if (!parts[i].isBlank()) {
+                    task.addTag(parts[i]); // Assuming Task has an addTag() method
+                }
+            }
+        }
+        return task;
     }
 }
