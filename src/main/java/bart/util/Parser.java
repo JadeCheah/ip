@@ -1,5 +1,7 @@
 package bart.util;
 
+import java.util.Arrays;
+
 import bart.command.AddCommand;
 import bart.command.Command;
 import bart.command.DeleteCommand;
@@ -7,6 +9,7 @@ import bart.command.ExitCommand;
 import bart.command.FindCommand;
 import bart.command.ListCommand;
 import bart.command.MarkCommand;
+import bart.command.TagCommand;
 import bart.exception.InvalidCommandException;
 
 /**
@@ -27,6 +30,8 @@ public class Parser {
             return createDeleteCommand(tokens);
         } else if (tokens[0].equals("find")) {
             return new FindCommand(tokens[1].trim());
+        } else if (tokens[0].equals("tag") || tokens[0].equals("untag")) {
+            return createTagCommand(tokens[0].equals("tag"), tokens[1].trim());
         } else if (input.equalsIgnoreCase("bye")) {
             return new ExitCommand();
         } else if (input.equalsIgnoreCase("list")) {
@@ -71,6 +76,47 @@ public class Parser {
         int taskNumber = Integer.parseInt(taskNumStr);
         return new DeleteCommand(taskNumber);
     }
+    /**
+     * Creates a {@code TagCommand} from the given input tokens.
+     *
+     * @param taskDetails The parsed input tokens.
+     * @return A {@TagCommand} instance.
+     * @throws InvalidCommandException If the format is incorrect or task number or tag is missing.
+     */
+    public static TagCommand createTagCommand(boolean isTag, String taskDetails) throws InvalidCommandException {
+        String[] tokens = taskDetails.split(" ", 2);
+        if (taskDetails.isBlank() || tokens.length < 2) {
+            throw new InvalidCommandException("Invalid format! Use: `tag <taskNumber> #<tag1> #<tag2> ...`");
+        }
+        // Extract task number
+        String taskNumStr = tokens[0].trim();
+        int taskNumber;
+        try {
+            taskNumber = Integer.parseInt(taskNumStr);
+            if (taskNumber <= 0) {
+                throw new InvalidCommandException("Task number must be greater than 0.");
+            }
+        } catch (NumberFormatException e) {
+            throw new InvalidCommandException("Invalid task number: " + taskNumStr);
+        }
+        // Extract tags
+        String tagDetails = tokens[1].trim();
+        if (tagDetails.isBlank()) {
+            throw new InvalidCommandException("Tag(s) cannot be empty.");
+        }
+        // Extract tags prefixed with '#'
+        String[] tags = tagDetails.split(" #");
+        tags[0] = tags[0].startsWith("#") ? tags[0] : "#" + tags[0]; // Ensure the first tag starts with '#'
+
+        for (String tag : tags) {
+            if (tag.isBlank() || !tag.startsWith("#")) {
+                throw new InvalidCommandException("Each tag should start with '#'.");
+            }
+        }
+
+        return new TagCommand(isTag, tags[0], taskNumber);
+    }
+
     /**
      * Checks if the given command is invalid (null or empty).
      *
