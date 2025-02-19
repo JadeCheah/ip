@@ -147,7 +147,11 @@ public class Storage {
         if (parts.length > minFields) {
             for (int i = minFields; i < parts.length; i++) {
                 if (!parts[i].isBlank()) {
-                    task.addTag(parts[i]); // Assuming Task has an addTag() method
+                    String tag = parts[i].trim();
+                    if (!tag.startsWith("#")) {
+                        tag = "#" + tag; // Ensure the tag is standardized
+                    }
+                    task.addTag(tag); // Add the standardized tag
                 }
             }
         }

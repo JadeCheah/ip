@@ -61,6 +61,8 @@ public class AddCommand extends Command {
         } catch (Exception e) {
             return new CommandResult(CommandResult.ResultType.FAILURE,
                     "Error: Something went wrong while adding the task.");
+        } finally {
+            storage.saveTasks(tasks);
         }
     }
 
@@ -157,7 +159,7 @@ public class AddCommand extends Command {
         String[] words = fullCommand.split(" ");
         for (String word : words) {
             if (word.startsWith("#")) {
-                task.addTag(word.substring(1)); // Remove '#' and add the tag
+                task.addTag(word.trim());
             }
         }
     }

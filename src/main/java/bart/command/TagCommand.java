@@ -43,6 +43,8 @@ public class TagCommand extends Command {
             return new CommandResult(CommandResult.ResultType.SUCCESS, ui.getTagTaskString(isTag, tag, task));
         } catch (IndexOutOfBoundsException e) {
             return new CommandResult(CommandResult.ResultType.FAILURE, Ui.TASK_NUMBER_OUT_OF_RANGE);
+        } finally {
+            storage.saveTasks(tasks);
         }
     }
 }

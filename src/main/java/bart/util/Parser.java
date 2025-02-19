@@ -31,7 +31,7 @@ public class Parser {
         } else if (tokens[0].equals("find")) {
             return new FindCommand(tokens[1].trim());
         } else if (tokens[0].equals("tag") || tokens[0].equals("untag")) {
-            return createTagCommand(tokens[1].trim());
+            return createTagCommand(tokens[0].equals("tag"), tokens[1].trim());
         } else if (input.equalsIgnoreCase("bye")) {
             return new ExitCommand();
         } else if (input.equalsIgnoreCase("list")) {
@@ -83,10 +83,10 @@ public class Parser {
      * @return A {@TagCommand} instance.
      * @throws InvalidCommandException If the format is incorrect or task number or tag is missing.
      */
-    public static TagCommand createTagCommand(String taskDetails) throws InvalidCommandException {
+    public static TagCommand createTagCommand(boolean isTag, String taskDetails) throws InvalidCommandException {
         String[] tokens = taskDetails.split(" ", 2);
         if (taskDetails.isBlank() || tokens.length < 2) {
-            throw new InvalidCommandException("Invalid format! Use: `tag <taskNumber> <tag>`");
+            throw new InvalidCommandException("Invalid format! Use: `tag <taskNumber> #<tag1> #<tag2> ...`");
         }
         // Extract task number
         String taskNumStr = tokens[0].trim();
@@ -99,13 +99,22 @@ public class Parser {
         } catch (NumberFormatException e) {
             throw new InvalidCommandException("Invalid task number: " + taskNumStr);
         }
-
-        // Extract the tag(s)
-        String tag = tokens[1].trim();
-        if (tag.isBlank()) {
-            throw new InvalidCommandException("Tag cannot be empty.");
+        // Extract tags
+        String tagDetails = tokens[1].trim();
+        if (tagDetails.isBlank()) {
+            throw new InvalidCommandException("Tag(s) cannot be empty.");
         }
-        return new TagCommand(true, tag, taskNumber);
+        // Extract tags prefixed with '#'
+        String[] tags = tagDetails.split(" #");
+        tags[0] = tags[0].startsWith("#") ? tags[0] : "#" + tags[0]; // Ensure the first tag starts with '#'
+
+        for (String tag : tags) {
+            if (tag.isBlank() || !tag.startsWith("#")) {
+                throw new InvalidCommandException("Each tag should start with '#'.");
+            }
+        }
+
+        return new TagCommand(isTag, tags[0], taskNumber);
     }
 
     /**

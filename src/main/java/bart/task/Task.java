@@ -87,6 +87,9 @@ public class Task {
      * @param tag The tag to be removed.
      */
     public void removeTag(String tag) {
+        if (!tag.startsWith("#")) {
+            tag = "#" + tag;
+        }
         tags.remove(tag);
     }
 
