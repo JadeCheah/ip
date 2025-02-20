@@ -1,7 +1,5 @@
 package bart.util;
 
-import java.util.Arrays;
-
 import bart.command.AddCommand;
 import bart.command.Command;
 import bart.command.DeleteCommand;

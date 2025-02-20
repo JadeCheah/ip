@@ -50,7 +50,8 @@ public class Event extends Task {
     public String toString() {
         return "[E]" + super.toString()
                 + " (from: " + formatDateToString(from)
-                + " to: " + formatDateToString(to) + ")";
+                + " to: " + formatDateToString(to) + ")"
+                + super.getTagsToString();
     }
 
     /**
@@ -60,7 +61,8 @@ public class Event extends Task {
      */
     @Override
     public String toFileFormat() {
-        return "E | " + super.toFileFormat() + " | " + from + " | " + to;
+        return "E | " + super.toFileFormat() + " | " + from + " | " + to
+                + super.getTagsToFileFormat();
     }
 
     /**

@@ -29,21 +29,30 @@ public class Ui {
     public static final String INVALID_COMMAND =
             """
             Invalid command! Please enter one of the following commands:
+            
             General Commands:
               - list → Shows all tasks.
               - bye → Exits the program.
+              
             Task Management Commands:
               - todo <task_description> → Adds a to-do task.
               - deadline <task_description> /by <yyyy-MM-dd> → Adds a deadline.
               - event <task_description> /from <yyyy-MM-dd> /to <yyyy-MM-dd> → Adds an event.
+              [Tip: Thy can add tags upon creating new tasks by appending with #<tag_string>
+                    e.g. todo <task_description> #<tag_string>]
+                    
             Task Modification Commands:
               - mark <task_number> → Marks a task as done.
               - unmark <task_number> → Unmarks a completed task.
+              - tag <task_number> #<tag_string> → Tags a task with given tag string.
+              - untag <task_number> #<tag_string> → Removes a given tag string from task.
               - delete <task_number> → Deletes a task from the list.
+              
             Search Command:
               - find <keyword> → Returns a list of tasks containing the specified keyword.
-            Tip: Task numbers correspond to the numbers in the list command.
-            Ensure proper command format and valid task numbers!
+              
+            [Tip: Task numbers correspond to the numbers in the list command.
+            Ensure proper command format and valid task numbers!]
             """;
     /** Message displayed when invalid mark format, displays correct mark command format */
     public static final String INVALID_MARK_FORMAT =

@@ -56,17 +56,33 @@ public class Task {
      * @return The string representation of the task.
      */
     public String toString() {
-        return "[" + getStatusIcon() + "] " + description + formatTags();
+        return "[" + getStatusIcon() + "] " + description;
     }
 
+    /**
+     * Returns the string representation of the tags.
+     *
+     * @return The string representation of the tags.
+     */
+    public String getTagsToString() {
+        return tags.isEmpty() ? "" : " " + String.join(" ", tags);
+    }
+
+    /**
+     * Returns the file format string representation of the tags.
+     *
+     * @return The file format of the tags.
+     */
+    public String getTagsToFileFormat() {
+        return tags.isEmpty() ? "" : " | " + String.join(" ", tags);
+    }
     /**
      * Returns the file format representation of the task.
      *
      * @return The file format representation of the task.
      */
     public String toFileFormat() {
-        String tagString = tags.isEmpty() ? "" : " | " + String.join(" ", tags);
-        return (isDone ? "1" : "0") + " | " + description + tagString;
+        return (isDone ? "1" : "0") + " | " + description;
     }
 
     /**
@@ -102,9 +118,6 @@ public class Task {
         return tags;
     }
 
-    private String formatTags() {
-        return tags.isEmpty() ? "" : " " + String.join(" ", tags);
-    }
 
     /**
      * Checks if this task is equal to another object.
