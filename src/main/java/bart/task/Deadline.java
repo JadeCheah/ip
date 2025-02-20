@@ -37,7 +37,8 @@ public class Deadline extends Task {
     @Override
     public String toString() {
         return "[D]" + super.toString()
-                + " (by: " + formatDateToString(by) + ")";
+                + " (by: " + formatDateToString(by) + ")"
+                + super.getTagsToString();
     }
 
     /**
@@ -47,7 +48,8 @@ public class Deadline extends Task {
      */
     @Override
     public String toFileFormat() {
-        return "D | " + super.toFileFormat() + " | " + by;
+        return "D | " + super.toFileFormat() + " | " + by
+                + super.getTagsToFileFormat();
     }
 
     /**

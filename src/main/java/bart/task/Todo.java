@@ -21,7 +21,7 @@ public class Todo extends Task {
      */
     @Override
     public String toString() {
-        return "[T]" + super.toString();
+        return "[T]" + super.toString() + super.getTagsToString();
     }
 
     /**
@@ -31,6 +31,7 @@ public class Todo extends Task {
      */
     @Override
     public String toFileFormat() {
-        return "T | " + super.toFileFormat();
+        return "T | " + super.toFileFormat()
+                + super.getTagsToFileFormat();
     }
 }

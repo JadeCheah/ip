@@ -30,7 +30,10 @@ public class Main extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
         AnchorPane ap = fxmlLoader.load();
         Scene scene = new Scene(ap);
+        stage.setTitle("Bartholomew");
         stage.setScene(scene);
+        stage.setMinHeight(220);
+        stage.setMinWidth(417);
         fxmlLoader.<MainWindow>getController().setBart(bartholomew); // inject the Bart instance
         stage.show();
     }
