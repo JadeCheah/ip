@@ -27,9 +27,9 @@ public class Parser {
         } else if (tokens[0].equals("delete")) {
             return createDeleteCommand(tokens);
         } else if (tokens[0].equals("find")) {
-            return new FindCommand(tokens[1].trim());
+            return createFindCommand(tokens);
         } else if (tokens[0].equals("tag") || tokens[0].equals("untag")) {
-            return createTagCommand(tokens[0].equals("tag"), tokens[1].trim());
+            return createTagCommand(tokens[0].equals("tag"), tokens);
         } else if (input.equalsIgnoreCase("bye")) {
             return new ExitCommand();
         } else if (input.equalsIgnoreCase("list")) {
@@ -81,10 +81,15 @@ public class Parser {
      * @return A {@TagCommand} instance.
      * @throws InvalidCommandException If the format is incorrect or task number or tag is missing.
      */
-    public static TagCommand createTagCommand(boolean isTag, String taskDetails) throws InvalidCommandException {
-        String[] tokens = taskDetails.split(" ", 2);
-        if (taskDetails.isBlank() || tokens.length < 2) {
-            throw new InvalidCommandException("Invalid format! Use: `tag <taskNumber> #<tag1> #<tag2> ...`");
+    public static TagCommand createTagCommand(boolean isTag, String[] taskDetails) throws InvalidCommandException {
+        String validDetail = taskDetails.length > 1 ? taskDetails[1].trim() : "";
+
+        if (validDetail.isEmpty()) {
+            throw new InvalidCommandException(Ui.INVALID_TAG_FORMAT);
+        }
+        String[] tokens = validDetail.split(" ", 2);
+        if (validDetail.isBlank() || tokens.length < 2) {
+            throw new InvalidCommandException(Ui.INVALID_TAG_FORMAT);
         }
         // Extract task number
         String taskNumStr = tokens[0].trim();
@@ -113,6 +118,20 @@ public class Parser {
         }
 
         return new TagCommand(isTag, tags[0], taskNumber);
+    }
+    /**
+     * Creates a {@code FindCommand} from the given input tokens.
+     *
+     * @param taskDetails The parsed input tokens.
+     * @return A {@FindCommand} instance.
+     * @throws InvalidCommandException If the given string keyword is empty or null
+     */
+    public static FindCommand createFindCommand(String[] taskDetails) throws InvalidCommandException {
+        String keywordStr = taskDetails.length > 1 ? taskDetails[1].trim() : "";
+        if (keywordStr.isBlank()) {
+            throw new InvalidCommandException(Ui.INVALID_FIND_FORMAT);
+        }
+        return new FindCommand(keywordStr);
     }
 
     /**
@@ -154,7 +173,8 @@ public class Parser {
      * Validates whether the given task details for an {@code Event} task are correctly formatted.
      *
      * @param taskDetails The task description including event start and end times.
-     * @return {@code true} if the task description contains "/from" and "/to" with valid details, otherwise {@code false}.
+     * @return {@code true} if the task description contains "/from" and "/to" with valid details,
+     *         otherwise {@code false}.
      */
     public static boolean isValidEvent(String taskDetails) {
         if (!taskDetails.contains("/from") || !taskDetails.contains("/to")) {

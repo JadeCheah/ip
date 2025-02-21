@@ -44,8 +44,7 @@ public class Bartholomew {
         try {
             Command command = Parser.parseCommand(commandText);
             assert tasks != null : "TaskList should not be null when executing commands";
-            CommandResult result = command.execute(tasks, ui, storage);
-            return result;
+            return command.execute(tasks, ui, storage);
         } catch (InvalidCommandException e) {
             return new CommandResult(CommandResult.ResultType.FAILURE, e.getMessage());
         }

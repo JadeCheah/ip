@@ -10,73 +10,65 @@ import bart.task.Task;
  * Provides helper methods to generate responses for various commands.
  */
 public class Ui {
-    /**
-     * The offset used for task numbering in the UI.
-     * Task numbers are 1-based for display purposes,
-     * while internal list indices are 0-based.
-     */
-    private static final int TASK_INDEX_OFFSET = 1;
-
-
+    /** Message displayed upon program exit. */
+    public static final String EXIT_MESSAGE = "Farewell! May the winds of fate bring us together again.\n";
+    /** Message displayed when the task list is empty. */
+    public static final String EMPTY_LIST_MESSAGE = "Thy list is empty, noble one!\n";
     /** The initial greeting message displayed when the application starts.*/
     public static final String GREETING_MESSAGE =
             """
             Greetings! I am Bartholomew.
             What service may I offer thee this day?
             """;
-
+    /** Message displayed when invalid mark format, displays correct mark command format */
+    public static final String INVALID_MARK_FORMAT =
+            "Please use format: `mark <taskNumber>` or `unmark <taskNumber>`";
+    /** Message displayed when invalid delete format, displays correct delete command format */
+    public static final String INVALID_DELETE_FORMAT =
+            "Please use format: `delete <taskNumber>`";
+    /** Message displayed when invalid find format, displays correct find command format */
+    public static final String INVALID_FIND_FORMAT =
+            "Please use format: `find <keywordString>`";
+    /** Message displayed when invalid tag format, displays correct tag command format */
+    public static final String INVALID_TAG_FORMAT =
+            "Please use format: `tag <taskNumber> #<tagString>` or `untag <taskNumber> #<tagString>`";
+    /** Message displayed when invalid todo format, displays correct task command format */
+    public static final String INVALID_TODO_FORMAT =
+            "Please use format: `todo <taskDescription>`";
+    /** Message displayed when invalid deadline format, displays correct deadline command format */
+    public static final String INVALID_DEADLINE_FORMAT =
+            "Please use format: `deadline <taskDescription> /by <yyyy-MM-dd>`";
+    /** Message displayed when invalid event format, displays correct event command format */
+    public static final String INVALID_EVENT_FORMAT =
+            "Please use format: `event <taskDescription> /from <yyyy-MM-dd> /to <yyyy-MM-dd>`";
+    /** Message displayed when an invalid date format is provided. */
+    public static final String INVALID_DATE_FORMAT = "Invalid date format. Please use format yyyy-MM-dd for dates.";
+    /** Message displayed when an invalid task number is provided. */
+    public static final String INVALID_TASK_NUMBER = "Task number must be a valid integer.";
     /** Message displayed when the user provides an invalid command. */
     public static final String INVALID_COMMAND =
             """
             Invalid command! Please enter one of the following commands:
-            
             General Commands:
               - list → Shows all tasks.
               - bye → Exits the program.
-              
             Task Management Commands:
-              - todo <task_description> → Adds a to-do task.
-              - deadline <task_description> /by <yyyy-MM-dd> → Adds a deadline.
-              - event <task_description> /from <yyyy-MM-dd> /to <yyyy-MM-dd> → Adds an event.
-              [Tip: Thy can add tags upon creating new tasks by appending with #<tag_string>
-                    e.g. todo <task_description> #<tag_string>]
-                    
+              - todo <taskDescription> → Adds a to-do task.
+              - deadline <taskDescription> /by <yyyy-MM-dd> → Adds a deadline.
+              - event <taskDescription> /from <yyyy-MM-dd> /to <yyyy-MM-dd> → Adds an event.
+              [Tip: Thy can add tags upon creating new tasks by appending with #<tagString>
+                    e.g. todo <taskDescription> #<tagString>]
             Task Modification Commands:
-              - mark <task_number> → Marks a task as done.
-              - unmark <task_number> → Unmarks a completed task.
-              - tag <task_number> #<tag_string> → Tags a task with given tag string.
-              - untag <task_number> #<tag_string> → Removes a given tag string from task.
-              - delete <task_number> → Deletes a task from the list.
-              
+              - mark <taskNumber> → Marks a task as done.
+              - unmark <taskNumber> → Unmarks a completed task.
+              - tag <taskNumber> #<tagString> → Tags a task with given tag string.
+              - untag <taskNumber> #<tagString> → Removes a given tag string from task.
+              - delete <taskNumber> → Deletes a task from the list.
             Search Command:
-              - find <keyword> → Returns a list of tasks containing the specified keyword.
-              
+              - find <keywordString> → Returns a list of tasks containing the specified keyword.
             [Tip: Task numbers correspond to the numbers in the list command.
             Ensure proper command format and valid task numbers!]
             """;
-    /** Message displayed when invalid mark format, displays correct mark command format */
-    public static final String INVALID_MARK_FORMAT =
-            "Please use format: `mark <task_number>` or `unmark <task_number>`";
-    /** Message displayed when invalid delete format, displays correct delete command format */
-    public static final String INVALID_DELETE_FORMAT =
-            "Please use format: `delete <task_number>`";
-    /** Message displayed when invalid todo format, displays correct task command format */
-    public static final String INVALID_TODO_FORMAT =
-            "Please use format: `todo <task_description>`";
-    /** Message displayed when invalid deadline format, displays correct deadline command format */
-    public static final String INVALID_DEADLINE_FORMAT =
-            "Please use format: `deadline <task_description> /by <yyyy-MM-dd>`";
-    /** Message displayed when invalid event format, displays correct event command format */
-    public static final String INVALID_EVENT_FORMAT =
-            "Please use format: `event <task_description> /from <yyyy-MM-dd> /to <yyyy-MM-dd>`";
-    /** Message displayed when an invalid date format is provided. */
-    public static final String INVALID_DATE_FORMAT = "Invalid date format. Please use format yyyy-MM-dd for dates.";
-
-    /** Message displayed upon program exit. */
-    public static final String EXIT_MESSAGE = "Farewell! May the winds of fate bring us together again.\n";
-
-    /** Message displayed when the task list is empty. */
-    public static final String EMPTY_LIST_MESSAGE = "Thy list is empty, noble one!\n";
 
     /** Message displayed when a task is marked as completed. */
     public static final String TASK_MARKED_MESSAGE = "Done and dusted! This chore is no more:\n  ";
@@ -84,11 +76,14 @@ public class Ui {
     /** Message displayed when a task is unmarked as incomplete. */
     public static final String TASK_UNMARKED_MESSAGE = "Alas, this task remains unfinished:\n   ";
 
-    /** Message displayed when an invalid task number is provided. */
-    public static final String INVALID_TASK_NUMBER = "Task number must be a valid integer.";
-
     /** Message displayed when a task number is out of range. */
     public static final String TASK_NUMBER_OUT_OF_RANGE = "Task number is out of range.";
+    /**
+     * The offset used for task numbering in the UI.
+     * Task numbers are 1-based for display purposes,
+     * while internal list indices are 0-based.
+     */
+    private static final int TASK_INDEX_OFFSET = 1;
 
     /**
      * Generates a response when a task is added.
@@ -98,10 +93,9 @@ public class Ui {
      * @return A formatted string confirming the addition of the task.
      */
     public String getAddTaskString(Task task, int numberOfTasksLeft) {
-        String output = "Noted! This task shall be remembered: \n  "
+        return "Noted! This task shall be remembered: \n  "
                 + task.toString() + "\n"
                 + " Thy list of labors now containeth " + numberOfTasksLeft + " undertakings.\n";
-        return output;
     }
 
     /**
@@ -112,10 +106,9 @@ public class Ui {
      * @return A formatted string confirming the deletion of the task.
      */
     public String getDeletedTaskString(Task task, int numberOfTasksLeft) {
-        String output = "This task is vanquished permanently! It shall trouble thee no further:\n   "
+        return "This task is vanquished permanently! It shall trouble thee no further:\n   "
                 + task.toString() + "\n"
                 + " Thy list of labors now containeth " + numberOfTasksLeft + " undertakings.\n";
-        return output;
     }
 
     /**

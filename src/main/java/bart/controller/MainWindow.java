@@ -1,9 +1,7 @@
 package bart.controller;
 
 import bart.Bartholomew;
-import bart.command.Command;
 import bart.command.CommandResult;
-import bart.util.Parser;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;

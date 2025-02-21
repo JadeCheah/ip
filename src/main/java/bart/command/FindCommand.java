@@ -26,8 +26,12 @@ public class FindCommand extends Command {
      */
     @Override
     public CommandResult execute(TaskList tasks, Ui ui, Storage storage) {
-        ArrayList<Task> filteredTasks = tasks.findTasks(keyword);
-        String result = ui.getFindTasksString(filteredTasks);
-        return new CommandResult(CommandResult.ResultType.SUCCESS, result);
+        try {
+            ArrayList<Task> filteredTasks = tasks.findTasks(keyword);
+            String result = ui.getFindTasksString(filteredTasks);
+            return new CommandResult(CommandResult.ResultType.SUCCESS, result);
+        } catch (IllegalArgumentException e) {
+            return new CommandResult(CommandResult.ResultType.FAILURE, e.getMessage());
+        }
     }
 }
