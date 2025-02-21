@@ -1,0 +1,8 @@
+T | 1 | Read book
+T | 0 | Buy groceries | #shopping
+D | 0 | Pay rent | 2025-02-25 | #important #finance
+E | 0 | Doctor’s appointment | 2025-02-22 | 2025-02-22 | #health
+E | 1 | Friend’s birthday party | 2025-02-27 | 2025-02-27 | #social
+T | 0 | Read a book | #AnimalFarm #self-care
+T | 1 | Call mom | #family
+T | 1 | Write a blog post | #work

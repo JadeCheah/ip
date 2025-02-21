@@ -1,7 +1,7 @@
 package bart.task;
 
-import java.util.Objects;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -48,6 +48,13 @@ public class Task {
      */
     public void markAsDone(Boolean done) {
         isDone = done;
+    }
+
+    /**
+     * Returns the boolean to isDone
+     */
+    public boolean isDone() {
+        return isDone;
     }
 
     /**

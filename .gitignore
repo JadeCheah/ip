@@ -6,7 +6,6 @@
 # Gradle build files
 /.gradle/
 /build/
-src/main/resources/docs/
 
 # Java compiled files
 *.class

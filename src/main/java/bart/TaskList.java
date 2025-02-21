@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import bart.task.Task;
+import bart.util.Ui;
 
 /**
  * Represents a list of tasks.
@@ -91,7 +92,10 @@ public class TaskList {
      * @param keyword The keyword to search for in task descriptions.
      * @return An {@code ArrayList} of tasks containing the keyword.
      */
-    public ArrayList<Task> findTasks(String keyword) {
+    public ArrayList<Task> findTasks(String keyword) throws IllegalArgumentException {
+        if (keyword == null || keyword.isEmpty()) {
+            throw new IllegalArgumentException(Ui.INVALID_FIND_FORMAT);
+        }
         return tasks.stream()
                 .filter(task -> task.getDescription().contains(keyword))
                 .collect(Collectors.toCollection(ArrayList::new));
