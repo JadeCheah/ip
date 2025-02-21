@@ -1,5 +1,5 @@
 # Bartholomew User Guide
-
+![Ui.png](Ui.png)
 Greetings, good traveler! I am Bartholomew, thy most faithful scribe. Entrust thy tasks to me, and I shall remember them for thy.
 
 ## Notes about the command format:
@@ -19,14 +19,10 @@ Greetings, good traveler! I am Bartholomew, thy most faithful scribe. Entrust th
 
 **Be sure to double-check the format of your commands!**
 
----
-
 ## Listing all tasks: `list`
 Displays a list of all the tasks you have entered.
 
 **Format:** `list`
-
----
 
 ## Adding a task: `todo`, `deadline`, `event`
 
@@ -56,8 +52,6 @@ Adds an event task with a start and end date.
 **Examples:**
 - `event Birthday party /from 2025-03-15 /to 2025-03-16 #celebration`
 - `event Team meeting /from 2025-03-10 /to 2025-03-10 #work #important`
-
----
 
 ## Modifying tasks: `mark`, `unmark`, `tag`, `untag`, `delete`
 
@@ -101,8 +95,6 @@ Deletes a task from your list.
 **Example:**
 - `delete 3`
 
----
-
 ## Searching for tasks: `find`
 Finds tasks containing the specified keyword(s).
 
@@ -114,19 +106,13 @@ The search is case-insensitive. e.g., `find read` will match "Read a book".
 - `find homework` will return tasks like "Complete homework #study".
 - `find report` will return tasks like "Submit report /by 2025-02-20 #work".
 
----
-
 ## Exiting the program: `bye`
 Exits the program.
 
 **Format:** `bye`
 
----
-
 ## Saving the data
 Bartholomew saves your data automatically after any command that modifies the tasks. There is no need to manually save your progress.
-
----
 
 ## Example usage
 ```text
